@@ -1,25 +1,43 @@
 package com.lab.opengarage.fake
 
+import com.lab.opengarage.data.Page
 import com.lab.opengarage.data.RecordRepository
 import com.lab.opengarage.model.Record
 import com.lab.opengarage.model.RecordType
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.map
 
 class FakeRecordRepository : RecordRepository {
     val store = MutableStateFlow<List<Record>>(emptyList())
 
-    override fun observeFeed(modelKey: String) =
-        store.map { l -> l.filter { it.modelKey == modelKey && it.shared }.sortedByDescending { it.createdAt } }
+    private fun paged(all: List<Record>, cursor: Any?, limit: Int): Page<Record> {
+        val offset = (cursor as? Int) ?: 0
+        val slice = all.drop(offset).take(limit)
+        val next = offset + slice.size
+        return Page(slice, next, next >= all.size)
+    }
 
-    override fun observeFeedByMake(make: String) =
-        store.map { l -> l.filter { it.make == make && it.shared }.sortedByDescending { it.createdAt } }
+    override suspend fun feedPage(make: String?, modelKey: String?, cursor: Any?, limit: Int): Page<Record> {
+        val all = store.value.filter { r ->
+            r.shared && when {
+                modelKey != null -> r.modelKey == modelKey
+                make != null -> r.make == make
+                else -> true
+            }
+        }.sortedByDescending { it.createdAt }
+        return paged(all, cursor, limit)
+    }
 
-    override fun observeCarRecords(carId: String, ownerUid: String) =
-        store.map { l -> l.filter { it.carId == carId && it.ownerUid == ownerUid }.sortedByDescending { it.date } }
+    override suspend fun carRecordsPage(carId: String, ownerUid: String, cursor: Any?, limit: Int): Page<Record> {
+        val all = store.value.filter { it.carId == carId && it.ownerUid == ownerUid }
+            .sortedByDescending { it.date }
+        return paged(all, cursor, limit)
+    }
 
-    override fun observeMyPublicRecords(ownerUid: String) =
-        store.map { l -> l.filter { it.ownerUid == ownerUid && it.type == RecordType.MAINTENANCE } }
+    override suspend fun myRecordsPage(ownerUid: String, cursor: Any?, limit: Int): Page<Record> {
+        val all = store.value.filter { it.ownerUid == ownerUid && it.type == RecordType.MAINTENANCE }
+            .sortedByDescending { it.createdAt }
+        return paged(all, cursor, limit)
+    }
 
     override suspend fun getRecord(recordId: String) =
         store.value.find { it.recordId == recordId }?.let { Result.success(it) }

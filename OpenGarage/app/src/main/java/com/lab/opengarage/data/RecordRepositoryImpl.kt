@@ -1,14 +1,10 @@
 package com.lab.opengarage.data
 
-import android.util.Log
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.lab.opengarage.model.Record
 import com.lab.opengarage.model.RecordType
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -17,42 +13,37 @@ class RecordRepositoryImpl @Inject constructor(
 ) : RecordRepository {
     private val records = db.collection("records")
 
-    private fun queryFlow(q: Query): Flow<List<Record>> = callbackFlow {
-        val reg = q.addSnapshotListener { snap, e ->
-            if (e != null) {
-                close(e); return@addSnapshotListener
-            }
-            trySend(snap?.toObjects(Record::class.java) ?: emptyList())
-        }
-        awaitClose { reg.remove() }
-    }.catch { e ->
-        Log.w("RecordRepo", "query failed: ${e.message}", e) // 권한/인덱스 오류 로깅
-        emit(emptyList()) // 크래시 대신 빈 결과
+    private suspend fun page(base: Query, cursor: Any?, limit: Int): Page<Record> {
+        var q = base.limit(limit.toLong())
+        if (cursor is DocumentSnapshot) q = q.startAfter(cursor)
+        val snap = q.get().await()
+        val docs = snap.documents
+        val items = docs.mapNotNull { it.toObject(Record::class.java) }
+        return Page(items, docs.lastOrNull(), docs.size < limit)
     }
 
-    override fun observeFeed(modelKey: String): Flow<List<Record>> = queryFlow(
-        records.whereEqualTo("modelKey", modelKey)
-            .whereEqualTo("shared", true)
-            .orderBy("createdAt", Query.Direction.DESCENDING)
-    )
+    override suspend fun feedPage(make: String?, modelKey: String?, cursor: Any?, limit: Int): Page<Record> {
+        val base = when {
+            modelKey != null -> records.whereEqualTo("modelKey", modelKey).whereEqualTo("shared", true)
+            make != null -> records.whereEqualTo("make", make).whereEqualTo("shared", true)
+            else -> records.whereEqualTo("shared", true)
+        }.orderBy("createdAt", Query.Direction.DESCENDING)
+        return page(base, cursor, limit)
+    }
 
-    override fun observeFeedByMake(make: String): Flow<List<Record>> = queryFlow(
-        records.whereEqualTo("make", make)
-            .whereEqualTo("shared", true)
-            .orderBy("createdAt", Query.Direction.DESCENDING)
-    )
-
-    override fun observeCarRecords(carId: String, ownerUid: String): Flow<List<Record>> = queryFlow(
-        records.whereEqualTo("ownerUid", ownerUid)
+    override suspend fun carRecordsPage(carId: String, ownerUid: String, cursor: Any?, limit: Int): Page<Record> {
+        val base = records.whereEqualTo("ownerUid", ownerUid)
             .whereEqualTo("carId", carId)
             .orderBy("date", Query.Direction.DESCENDING)
-    )
+        return page(base, cursor, limit)
+    }
 
-    override fun observeMyPublicRecords(ownerUid: String): Flow<List<Record>> = queryFlow(
-        records.whereEqualTo("ownerUid", ownerUid)
+    override suspend fun myRecordsPage(ownerUid: String, cursor: Any?, limit: Int): Page<Record> {
+        val base = records.whereEqualTo("ownerUid", ownerUid)
             .whereEqualTo("type", RecordType.MAINTENANCE.name)
             .orderBy("createdAt", Query.Direction.DESCENDING)
-    )
+        return page(base, cursor, limit)
+    }
 
     override suspend fun getRecord(recordId: String): Result<Record> = runCatching {
         records.document(recordId).get().await().toObject(Record::class.java) ?: error("기록 없음")

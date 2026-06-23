@@ -1,15 +1,20 @@
 package com.lab.opengarage.fake
 
 import com.lab.opengarage.data.CarRepository
+import com.lab.opengarage.data.Page
 import com.lab.opengarage.model.Car
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.map
 
 class FakeCarRepository : CarRepository {
     val store = MutableStateFlow<List<Car>>(emptyList())
 
-    override fun observeMyCars(ownerUid: String) =
-        store.map { list -> list.filter { it.ownerUid == ownerUid } }
+    override suspend fun myCarsPage(ownerUid: String, cursor: Any?, limit: Int): Page<Car> {
+        val all = store.value.filter { it.ownerUid == ownerUid }.sortedByDescending { it.createdAt }
+        val offset = (cursor as? Int) ?: 0
+        val slice = all.drop(offset).take(limit)
+        val next = offset + slice.size
+        return Page(slice, next, next >= all.size)
+    }
 
     override suspend fun getCar(carId: String) =
         store.value.find { it.carId == carId }?.let { Result.success(it) }

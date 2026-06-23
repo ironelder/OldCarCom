@@ -4,37 +4,44 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lab.opengarage.data.RecordRepository
 import com.lab.opengarage.model.Car
-import com.lab.opengarage.model.Record
+import com.lab.opengarage.ui.common.Paginator
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class FeedViewModel @Inject constructor(
     private val repo: RecordRepository,
 ) : ViewModel() {
 
-    private data class Query(val make: String, val model: String)
+    // 입력값(탭 이동 후에도 ViewModel 이 살아있어 유지됨)
+    val make = MutableStateFlow("")
+    val model = MutableStateFlow("")
 
-    private val query = MutableStateFlow(Query("", ""))
+    private var curMake: String? = null
+    private var curModelKey: String? = null
 
-    /** 제조사 필수, 모델은 선택. 모델 비면 제조사 전체 기록을 본다. */
-    fun search(make: String, model: String) {
-        query.value = Query(make.trim(), model.trim())
+    val paginator = Paginator { cursor, limit -> repo.feedPage(curMake, curModelKey, cursor, limit) }
+
+    init {
+        // 최초 진입: 필터 없이 전체 공개 피드
+        viewModelScope.launch { paginator.refresh() }
     }
 
-    val records: StateFlow<List<Record>> = query
-        .filter { it.make.isNotBlank() }
-        .flatMapLatest { q ->
-            if (q.model.isBlank()) repo.observeFeedByMake(q.make)
-            else repo.observeFeed(Car.makeModelKey(q.make, q.model))
-        }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    fun setMake(value: String) { make.value = value }
+    fun setModel(value: String) { model.value = value }
+
+    /** 제조사 필수, 모델 선택. 모델 비면 제조사 전체. 둘 다 비면 전체 피드. */
+    fun search() {
+        val mk = make.value.trim()
+        val md = model.value.trim()
+        curMake = mk.ifBlank { null }
+        curModelKey = if (mk.isBlank() || md.isBlank()) null else Car.makeModelKey(mk, md)
+        viewModelScope.launch { paginator.refresh() }
+    }
+
+    fun loadMore() {
+        viewModelScope.launch { paginator.loadMore() }
+    }
 }

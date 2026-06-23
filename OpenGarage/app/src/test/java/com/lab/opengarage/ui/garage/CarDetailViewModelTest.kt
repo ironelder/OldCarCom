@@ -10,7 +10,6 @@ import com.lab.opengarage.model.RecordType
 import com.lab.opengarage.model.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
@@ -37,7 +36,6 @@ class CarDetailViewModelTest {
         val auth = FakeAuthRepository().apply { state.value = User("uid1", "테스터", "") }
         val vm = CarDetailViewModel(rec, car, auth, SavedStateHandle(mapOf("carId" to "c1")))
         advanceUntilIdle()
-        val list = vm.records.first { it.isNotEmpty() }
-        assertEquals(listOf("r1", "r2"), list.map { it.recordId })
+        assertEquals(listOf("r1", "r2"), vm.paginator.items.value.map { it.recordId })
     }
 }

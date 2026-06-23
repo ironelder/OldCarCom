@@ -4,33 +4,36 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lab.opengarage.data.AuthRepository
 import com.lab.opengarage.data.RecordRepository
-import com.lab.opengarage.model.Record
 import com.lab.opengarage.model.User
+import com.lab.opengarage.ui.common.Paginator
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val auth: AuthRepository,
-    records: RecordRepository,
+    private val records: RecordRepository,
 ) : ViewModel() {
+    private var uid: String? = null
+
     val user: StateFlow<User?> =
         auth.currentUser.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
 
-    val myRecords: StateFlow<List<Record>> = auth.currentUser
-        .filterNotNull()
-        .flatMapLatest { records.observeMyPublicRecords(it.uid) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    val paginator = Paginator { cursor, limit -> records.myRecordsPage(uid ?: "", cursor, limit) }
 
-    fun signOut() {
-        viewModelScope.launch { auth.signOut() }
+    init { viewModelScope.launch { ensureUid(); paginator.refresh() } }
+
+    private suspend fun ensureUid() {
+        if (uid == null) uid = auth.currentUser.filterNotNull().first().uid
     }
+
+    fun refresh() = viewModelScope.launch { ensureUid(); paginator.refresh() }
+    fun loadMore() = viewModelScope.launch { paginator.loadMore() }
+    fun signOut() = viewModelScope.launch { auth.signOut() }
 }

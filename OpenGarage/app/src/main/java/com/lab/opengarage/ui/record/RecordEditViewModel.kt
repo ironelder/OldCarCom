@@ -38,15 +38,18 @@ class RecordEditViewModel @Inject constructor(
     private val auth: AuthRepository,
 ) : ViewModel() {
     val saved = MutableStateFlow(false)
+    val saving = MutableStateFlow(false)
     val error = MutableStateFlow<String?>(null)
 
     fun save(form: RecordForm, photoUris: List<Uri>) {
+        if (saving.value) return // 중복 저장 방지
         viewModelScope.launch {
+            saving.value = true
             val user = auth.currentUser.first() ?: run {
-                error.value = "로그인 필요"; return@launch
+                error.value = "로그인 필요"; saving.value = false; return@launch
             }
             val car = cars.getCar(form.carId).getOrElse {
-                error.value = "차량 없음"; return@launch
+                error.value = "차량 없음"; saving.value = false; return@launch
             }
             val base = Record(
                 carId = form.carId,
@@ -65,7 +68,7 @@ class RecordEditViewModel @Inject constructor(
                 shared = if (form.type == RecordType.FUEL) false else form.isPublic,
             )
             val id = records.upsertRecord(base).getOrElse {
-                error.value = it.message; return@launch
+                error.value = it.message; saving.value = false; return@launch
             }
             if (photoUris.isNotEmpty()) {
                 photos.uploadRecordPhotos(user.uid, id, photoUris)

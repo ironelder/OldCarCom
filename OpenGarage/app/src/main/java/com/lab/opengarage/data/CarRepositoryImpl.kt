@@ -1,11 +1,9 @@
 package com.lab.opengarage.data
 
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.lab.opengarage.model.Car
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -14,16 +12,15 @@ class CarRepositoryImpl @Inject constructor(
 ) : CarRepository {
     private val cars = db.collection("cars")
 
-    override fun observeMyCars(ownerUid: String): Flow<List<Car>> = callbackFlow {
-        val reg = cars.whereEqualTo("ownerUid", ownerUid)
+    override suspend fun myCarsPage(ownerUid: String, cursor: Any?, limit: Int): Page<Car> {
+        var q: Query = cars.whereEqualTo("ownerUid", ownerUid)
             .orderBy("createdAt", Query.Direction.DESCENDING)
-            .addSnapshotListener { snap, e ->
-                if (e != null) {
-                    close(e); return@addSnapshotListener
-                }
-                trySend(snap?.toObjects(Car::class.java) ?: emptyList())
-            }
-        awaitClose { reg.remove() }
+            .limit(limit.toLong())
+        if (cursor is DocumentSnapshot) q = q.startAfter(cursor)
+        val snap = q.get().await()
+        val docs = snap.documents
+        val items = docs.mapNotNull { it.toObject(Car::class.java) }
+        return Page(items, docs.lastOrNull(), docs.size < limit)
     }
 
     override suspend fun getCar(carId: String): Result<Car> = runCatching {
