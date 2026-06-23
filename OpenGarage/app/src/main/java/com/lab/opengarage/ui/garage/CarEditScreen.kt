@@ -2,6 +2,7 @@ package com.lab.opengarage.ui.garage
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -40,6 +41,7 @@ fun CarEditScreen(
         Modifier
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
+            .imePadding()
             .padding(16.dp),
     ) {
         Text("차 추가", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(bottom = 12.dp))

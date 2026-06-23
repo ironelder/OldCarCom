@@ -23,13 +23,26 @@ class Paginator<T>(
     private var cursor: Any? = null
     private var inFlight = false
 
-    /** 처음부터 다시 로드. */
+    /**
+     * 첫 페이지를 다시 불러와 교체(soft). 기존 items 를 비우지 않아 화면 깜빡임이 없다.
+     */
     suspend fun refresh() {
-        cursor = null
-        endReached.value = false
-        items.value = emptyList()
-        initialized.value = false
-        loadMore()
+        if (inFlight) return
+        inFlight = true
+        loading.value = true
+        try {
+            val p = source(null, pageSize)
+            cursor = p.cursor
+            items.value = p.items
+            endReached.value = p.endReached
+        } catch (e: Exception) {
+            Log.w("Paginator", "refresh failed: ${e.message}", e)
+            endReached.value = true
+        } finally {
+            initialized.value = true
+            loading.value = false
+            inFlight = false
+        }
     }
 
     /** 다음 페이지 로드. 진행 중이거나 끝이면 무시. */
