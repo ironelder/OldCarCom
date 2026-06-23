@@ -52,6 +52,7 @@ class RecordEditViewModel @Inject constructor(
                 carId = form.carId,
                 ownerUid = user.uid,
                 ownerNickname = user.nickname,
+                make = car.make,
                 modelKey = car.modelKey,
                 type = form.type,
                 date = form.date,
@@ -61,7 +62,7 @@ class RecordEditViewModel @Inject constructor(
                 cost = form.cost,
                 liters = form.liters,
                 fuelType = form.fuelType,
-                isPublic = if (form.type == RecordType.FUEL) false else form.isPublic,
+                shared = if (form.type == RecordType.FUEL) false else form.isPublic,
             )
             val id = records.upsertRecord(base).getOrElse {
                 error.value = it.message; return@launch

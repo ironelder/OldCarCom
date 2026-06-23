@@ -17,7 +17,7 @@ service cloud.firestore {
 
     match /records/{recordId} {
       // 공개 정비기록은 누구나, 비공개(주유)는 작성자 본인만 읽기
-      allow read: if resource.data.isPublic == true
+      allow read: if resource.data.shared == true
                   || (request.auth != null && resource.data.ownerUid == request.auth.uid);
       allow create: if request.auth != null
                     && request.resource.data.ownerUid == request.auth.uid;

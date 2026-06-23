@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.lab.opengarage.model.Car
 import com.lab.opengarage.ui.common.BrandPicker
 import com.lab.opengarage.ui.common.RecordCard
 
@@ -48,24 +47,24 @@ fun FeedScreen(
         OutlinedTextField(
             value = model,
             onValueChange = { model = it },
-            label = { Text("모델") },
+            label = { Text("모델 (선택 — 비우면 제조사 전체)") },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp),
         )
         Button(
-            onClick = { vm.setModelKey(Car.makeModelKey(make, model)) },
+            onClick = { vm.search(make, model) },
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth(),
-            enabled = make.isNotBlank() && model.isNotBlank(),
+            enabled = make.isNotBlank(),
         ) {
-            Text("이 차종 기록 보기")
+            Text(if (model.isBlank()) "이 제조사 전체 기록 보기" else "이 차종 기록 보기")
         }
 
         if (records.isEmpty()) {
             Text(
-                "차종을 입력해 정비기록을 찾아보세요.",
+                "제조사를 골라 정비기록을 찾아보세요. (모델은 선택)",
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(16.dp),
             )

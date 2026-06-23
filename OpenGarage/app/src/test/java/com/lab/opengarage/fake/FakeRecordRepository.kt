@@ -10,7 +10,10 @@ class FakeRecordRepository : RecordRepository {
     val store = MutableStateFlow<List<Record>>(emptyList())
 
     override fun observeFeed(modelKey: String) =
-        store.map { l -> l.filter { it.modelKey == modelKey && it.isPublic }.sortedByDescending { it.createdAt } }
+        store.map { l -> l.filter { it.modelKey == modelKey && it.shared }.sortedByDescending { it.createdAt } }
+
+    override fun observeFeedByMake(make: String) =
+        store.map { l -> l.filter { it.make == make && it.shared }.sortedByDescending { it.createdAt } }
 
     override fun observeCarRecords(carId: String, ownerUid: String) =
         store.map { l -> l.filter { it.carId == carId && it.ownerUid == ownerUid }.sortedByDescending { it.date } }
@@ -26,7 +29,7 @@ class FakeRecordRepository : RecordRepository {
         val id = record.recordId.ifBlank { "rec_${store.value.size + 1}" }
         val forced = record.copy(
             recordId = id,
-            isPublic = if (record.type == RecordType.FUEL) false else record.isPublic,
+            shared = if (record.type == RecordType.FUEL) false else record.shared,
         )
         store.value = store.value.filterNot { it.recordId == id } + forced
         return Result.success(id)

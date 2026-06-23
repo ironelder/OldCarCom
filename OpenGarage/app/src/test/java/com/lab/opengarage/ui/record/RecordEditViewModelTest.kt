@@ -46,7 +46,7 @@ class RecordEditViewModelTest {
             emptyList(),
         )
         advanceUntilIdle()
-        assertFalse(rec.store.value.single().isPublic)
+        assertFalse(rec.store.value.single().shared)
     }
 
     @Test fun maintenance_record_keeps_public_and_modelKey() = runTest {
@@ -60,7 +60,8 @@ class RecordEditViewModelTest {
         )
         advanceUntilIdle()
         val r = rec.store.value.single()
-        assertTrue(r.isPublic)
+        assertTrue(r.shared)
         assertEquals("현대_프라이드", r.modelKey)
+        assertEquals("현대", r.make)
     }
 }

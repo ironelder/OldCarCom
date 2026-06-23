@@ -1,5 +1,6 @@
 package com.lab.opengarage.data
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.lab.opengarage.model.Record
@@ -24,11 +25,20 @@ class RecordRepositoryImpl @Inject constructor(
             trySend(snap?.toObjects(Record::class.java) ?: emptyList())
         }
         awaitClose { reg.remove() }
-    }.catch { emit(emptyList()) } // 권한/인덱스 오류 시 크래시 대신 빈 결과
+    }.catch { e ->
+        Log.w("RecordRepo", "query failed: ${e.message}", e) // 권한/인덱스 오류 로깅
+        emit(emptyList()) // 크래시 대신 빈 결과
+    }
 
     override fun observeFeed(modelKey: String): Flow<List<Record>> = queryFlow(
         records.whereEqualTo("modelKey", modelKey)
-            .whereEqualTo("isPublic", true)
+            .whereEqualTo("shared", true)
+            .orderBy("createdAt", Query.Direction.DESCENDING)
+    )
+
+    override fun observeFeedByMake(make: String): Flow<List<Record>> = queryFlow(
+        records.whereEqualTo("make", make)
+            .whereEqualTo("shared", true)
             .orderBy("createdAt", Query.Direction.DESCENDING)
     )
 
@@ -52,7 +62,7 @@ class RecordRepositoryImpl @Inject constructor(
         val ref = if (record.recordId.isBlank()) records.document() else records.document(record.recordId)
         val forced = record.copy(
             recordId = ref.id,
-            isPublic = if (record.type == RecordType.FUEL) false else record.isPublic,
+            shared = if (record.type == RecordType.FUEL) false else record.shared,
             createdAt = if (record.createdAt == 0L) System.currentTimeMillis() else record.createdAt,
         )
         ref.set(forced).await()

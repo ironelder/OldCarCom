@@ -29,9 +29,9 @@ class CarDetailViewModelTest {
     @Test fun shows_both_fuel_and_maintenance_for_car() = runTest {
         val rec = FakeRecordRepository()
         rec.store.value = listOf(
-            Record("r1", "c1", ownerUid = "uid1", type = RecordType.MAINTENANCE, date = 2, modelKey = "현대_프라이드", isPublic = true),
-            Record("r2", "c1", ownerUid = "uid1", type = RecordType.FUEL, date = 1, isPublic = false),
-            Record("r3", "cX", ownerUid = "uid1", type = RecordType.MAINTENANCE, date = 9, isPublic = true),
+            Record("r1", "c1", ownerUid = "uid1", type = RecordType.MAINTENANCE, date = 2, modelKey = "현대_프라이드", shared = true),
+            Record("r2", "c1", ownerUid = "uid1", type = RecordType.FUEL, date = 1, shared = false),
+            Record("r3", "cX", ownerUid = "uid1", type = RecordType.MAINTENANCE, date = 9, shared = true),
         )
         val car = FakeCarRepository().apply { store.value = listOf(Car("c1", "uid1", "현대", "프라이드")) }
         val auth = FakeAuthRepository().apply { state.value = User("uid1", "테스터", "") }
