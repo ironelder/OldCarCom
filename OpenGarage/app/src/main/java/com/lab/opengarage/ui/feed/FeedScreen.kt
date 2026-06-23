@@ -1,8 +1,6 @@
 package com.lab.opengarage.ui.feed
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lab.opengarage.model.Car
+import com.lab.opengarage.ui.common.BrandPicker
 import com.lab.opengarage.ui.common.RecordCard
 
 @Composable
@@ -39,25 +38,21 @@ fun FeedScreen(
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(16.dp),
         )
-        Row(
-            Modifier
+        BrandPicker(
+            selected = make,
+            onSelected = { make = it },
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            OutlinedTextField(
-                value = make,
-                onValueChange = { make = it },
-                label = { Text("제조사") },
-                modifier = Modifier.weight(1f),
-            )
-            OutlinedTextField(
-                value = model,
-                onValueChange = { model = it },
-                label = { Text("모델") },
-                modifier = Modifier.weight(1f),
-            )
-        }
+        )
+        OutlinedTextField(
+            value = model,
+            onValueChange = { model = it },
+            label = { Text("모델") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+        )
         Button(
             onClick = { vm.setModelKey(Car.makeModelKey(make, model)) },
             modifier = Modifier

@@ -21,6 +21,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.lab.opengarage.ui.common.BrandPicker
 
 @Composable
 fun CarEditScreen(
@@ -42,7 +43,7 @@ fun CarEditScreen(
             .padding(16.dp),
     ) {
         Text("차 추가", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(bottom = 12.dp))
-        OutlinedTextField(make, { make = it }, label = { Text("제조사 (예: 현대)") }, modifier = Modifier.fillMaxWidth())
+        BrandPicker(selected = make, onSelected = { make = it }, modifier = Modifier.fillMaxWidth())
         OutlinedTextField(model, { model = it }, label = { Text("모델 (예: 프라이드)") }, modifier = Modifier.fillMaxWidth().padding(top = 8.dp))
         OutlinedTextField(
             year, { year = it.filter(Char::isDigit) },
