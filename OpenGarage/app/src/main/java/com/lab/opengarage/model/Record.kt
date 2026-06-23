@@ -1,0 +1,33 @@
+package com.lab.opengarage.model
+
+/** 기록 종류. MAINTENANCE=공유 정비노트, FUEL=비공개 주유 차계부. */
+enum class RecordType { MAINTENANCE, FUEL }
+
+/** 주유 시 유종. */
+enum class FuelType { GASOLINE, DIESEL, LPG }
+
+/**
+ * 정비·주유 기록. Firestore `records/{recordId}` 문서와 매핑.
+ *
+ * 차종 피드를 join 없이 1쿼리로 처리하기 위해 [modelKey] 와 [ownerNickname] 을 비정규화 저장한다.
+ * [type]=FUEL 기록은 항상 [isPublic]=false 로 강제되어 피드에 노출되지 않는다(작성 단계에서 보장).
+ * [liters], [fuelType] 은 FUEL 기록에서만 채워진다.
+ */
+data class Record(
+    val recordId: String = "",
+    val carId: String = "",
+    val ownerUid: String = "",
+    val ownerNickname: String = "",
+    val modelKey: String = "",
+    val type: RecordType = RecordType.MAINTENANCE,
+    val date: Long = 0L,
+    val mileageKm: Int = 0,
+    val title: String = "",
+    val description: String = "",
+    val photoUrls: List<String> = emptyList(),
+    val cost: Long = 0L,
+    val liters: Double? = null,
+    val fuelType: FuelType? = null,
+    val isPublic: Boolean = true,
+    val createdAt: Long = 0L,
+)
