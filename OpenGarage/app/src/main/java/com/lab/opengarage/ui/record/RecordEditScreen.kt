@@ -50,6 +50,7 @@ fun RecordEditScreen(
 ) {
     val saved by vm.saved.collectAsStateWithLifecycle()
     val saving by vm.saving.collectAsStateWithLifecycle()
+    val initial by vm.initial.collectAsStateWithLifecycle()
     LaunchedEffect(saved) { if (saved) onDone() }
 
     var type by remember { mutableStateOf(RecordType.MAINTENANCE) }
@@ -61,6 +62,21 @@ fun RecordEditScreen(
     var liters by remember { mutableStateOf("") }
     var fuelType by remember { mutableStateOf(FuelType.GASOLINE) }
     var photoUris by remember { mutableStateOf<List<Uri>>(emptyList()) }
+
+    // 수정 모드: 기존 값 1회 프리필
+    LaunchedEffect(initial) {
+        initial?.let {
+            type = it.type
+            title = it.title
+            mileage = if (it.mileageKm > 0) it.mileageKm.toString() else ""
+            cost = if (it.cost > 0) it.cost.toString() else ""
+            description = it.description
+            isPublic = it.shared
+            liters = it.liters?.toString() ?: ""
+            fuelType = it.fuelType ?: FuelType.GASOLINE
+        }
+    }
+    val effectiveCarId = initial?.carId?.takeIf { it.isNotBlank() } ?: carId
 
     val picker = rememberLauncherForActivityResult(
         ActivityResultContracts.PickMultipleVisualMedia(5),
@@ -74,7 +90,7 @@ fun RecordEditScreen(
             .imePadding()
             .padding(16.dp),
     ) {
-        Text("기록 작성", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(bottom = 12.dp))
+        Text(if (vm.editing) "기록 수정" else "기록 작성", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(bottom = 12.dp))
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             FilterChip(
@@ -142,7 +158,7 @@ fun RecordEditScreen(
             onClick = {
                 vm.save(
                     RecordForm(
-                        carId = carId,
+                        carId = effectiveCarId,
                         type = type,
                         title = title.trim(),
                         mileageKm = mileage.toIntOrNull() ?: 0,
@@ -155,7 +171,7 @@ fun RecordEditScreen(
                     photoUris,
                 )
             },
-            enabled = title.isNotBlank() && carId.isNotBlank() && !saving,
+            enabled = title.isNotBlank() && effectiveCarId.isNotBlank() && !saving,
             modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
         ) {
             Text("저장")

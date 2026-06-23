@@ -1,6 +1,7 @@
 package com.lab.opengarage.ui.record
 
 import android.net.Uri
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lab.opengarage.data.AuthRepository
@@ -36,10 +37,20 @@ class RecordEditViewModel @Inject constructor(
     private val photos: PhotoRepository,
     private val cars: CarRepository,
     private val auth: AuthRepository,
+    handle: SavedStateHandle,
 ) : ViewModel() {
+    private val recordId: String = handle["recordId"] ?: ""
+    val editing: Boolean = recordId.isNotBlank()
+
+    /** 수정 모드 프리필용 기존 기록. */
+    val initial = MutableStateFlow<Record?>(null)
     val saved = MutableStateFlow(false)
     val saving = MutableStateFlow(false)
     val error = MutableStateFlow<String?>(null)
+
+    init {
+        if (editing) viewModelScope.launch { records.getRecord(recordId).onSuccess { initial.value = it } }
+    }
 
     fun save(form: RecordForm, photoUris: List<Uri>) {
         if (saving.value) return // 중복 저장 방지
@@ -51,7 +62,9 @@ class RecordEditViewModel @Inject constructor(
             val car = cars.getCar(form.carId).getOrElse {
                 error.value = "차량 없음"; saving.value = false; return@launch
             }
+            val prev = initial.value
             val base = Record(
+                recordId = recordId,
                 carId = form.carId,
                 ownerUid = user.uid,
                 ownerNickname = user.nickname,
@@ -66,6 +79,8 @@ class RecordEditViewModel @Inject constructor(
                 liters = form.liters,
                 fuelType = form.fuelType,
                 shared = if (form.type == RecordType.FUEL) false else form.isPublic,
+                photoUrls = prev?.photoUrls ?: emptyList(), // 새 사진 없으면 기존 유지
+                createdAt = prev?.createdAt ?: 0L,
             )
             val id = records.upsertRecord(base).getOrElse {
                 error.value = it.message; saving.value = false; return@launch

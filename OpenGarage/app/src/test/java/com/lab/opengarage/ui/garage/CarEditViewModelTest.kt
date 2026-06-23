@@ -1,5 +1,6 @@
 package com.lab.opengarage.ui.garage
 
+import androidx.lifecycle.SavedStateHandle
 import com.lab.opengarage.fake.FakeAuthRepository
 import com.lab.opengarage.fake.FakeCarRepository
 import com.lab.opengarage.model.User
@@ -24,7 +25,7 @@ class CarEditViewModelTest {
     @Test fun save_persists_car_with_modelKey_and_owner() = runTest {
         val cars = FakeCarRepository()
         val auth = FakeAuthRepository().apply { state.value = User("uid1", "테스터", "") }
-        val vm = CarEditViewModel(cars, auth)
+        val vm = CarEditViewModel(cars, auth, SavedStateHandle())
         vm.save("현대", "프라이드", 2005, "은마")
         advanceUntilIdle()
         val saved = cars.store.value.single()

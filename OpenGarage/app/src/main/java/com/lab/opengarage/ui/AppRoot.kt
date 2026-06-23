@@ -84,26 +84,33 @@ private fun MainApp() {
             }
             composable(Routes.GARAGE) {
                 GarageScreen(
-                    onAddCar = { nav.navigate(Routes.CAR_EDIT) },
+                    onAddCar = { nav.navigate(Routes.carEdit()) },
                     onCarClick = { nav.navigate(Routes.carDetail(it)) },
                 )
             }
             composable(Routes.PROFILE) {
                 ProfileScreen(onRecordClick = { nav.navigate(Routes.recordDetail(it)) })
             }
-            composable(Routes.CAR_EDIT) {
+            composable(
+                Routes.CAR_EDIT,
+                arguments = listOf(navArgument("carId") { type = NavType.StringType; defaultValue = "" }),
+            ) {
                 CarEditScreen(onDone = { nav.popBackStack() })
             }
             composable(Routes.CAR_DETAIL) {
                 CarDetailScreen(
                     onBack = { nav.popBackStack() },
+                    onEditCar = { carId -> nav.navigate(Routes.carEdit(carId)) },
                     onAddRecord = { carId -> nav.navigate(Routes.recordEdit(carId)) },
                     onRecordClick = { nav.navigate(Routes.recordDetail(it)) },
                 )
             }
             composable(
                 Routes.RECORD_EDIT,
-                arguments = listOf(navArgument("carId") { type = NavType.StringType; defaultValue = "" }),
+                arguments = listOf(
+                    navArgument("carId") { type = NavType.StringType; defaultValue = "" },
+                    navArgument("recordId") { type = NavType.StringType; defaultValue = "" },
+                ),
             ) { entry ->
                 RecordEditScreen(
                     carId = entry.arguments?.getString("carId").orEmpty(),
@@ -111,7 +118,10 @@ private fun MainApp() {
                 )
             }
             composable(Routes.RECORD_DETAIL) {
-                RecordDetailScreen(onBack = { nav.popBackStack() })
+                RecordDetailScreen(
+                    onBack = { nav.popBackStack() },
+                    onEdit = { recordId, carId -> nav.navigate(Routes.recordEdit(carId, recordId)) },
+                )
             }
         }
     }

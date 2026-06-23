@@ -30,12 +30,23 @@ fun CarEditScreen(
     vm: CarEditViewModel = hiltViewModel(),
 ) {
     val saved by vm.saved.collectAsStateWithLifecycle()
+    val initial by vm.initial.collectAsStateWithLifecycle()
     LaunchedEffect(saved) { if (saved) onDone() }
 
     var make by remember { mutableStateOf("") }
     var model by remember { mutableStateOf("") }
     var year by remember { mutableStateOf("") }
     var nickname by remember { mutableStateOf("") }
+
+    // 수정 모드: 기존 값 1회 프리필
+    LaunchedEffect(initial) {
+        initial?.let {
+            make = it.make
+            model = it.model
+            year = if (it.year > 0) it.year.toString() else ""
+            nickname = it.nickname
+        }
+    }
 
     Column(
         Modifier
@@ -44,7 +55,7 @@ fun CarEditScreen(
             .imePadding()
             .padding(16.dp),
     ) {
-        Text("차 추가", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(bottom = 12.dp))
+        Text(if (vm.editing) "차 수정" else "차 추가", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(bottom = 12.dp))
         BrandPicker(selected = make, onSelected = { make = it }, modifier = Modifier.fillMaxWidth())
         OutlinedTextField(model, { model = it }, label = { Text("모델 (예: 프라이드)") }, modifier = Modifier.fillMaxWidth().padding(top = 8.dp))
         OutlinedTextField(

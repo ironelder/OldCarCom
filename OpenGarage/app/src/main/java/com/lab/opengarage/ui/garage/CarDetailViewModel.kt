@@ -26,6 +26,7 @@ class CarDetailViewModel @Inject constructor(
     private var uid: String? = null
 
     val car = MutableStateFlow<Car?>(null)
+    val deleted = MutableStateFlow(false)
     val paginator = Paginator { cursor, limit -> records.carRecordsPage(carId, uid ?: "", cursor, limit) }
 
     init {
@@ -39,4 +40,8 @@ class CarDetailViewModel @Inject constructor(
 
     fun refresh() = viewModelScope.launch { ensureUid(); paginator.refresh() }
     fun loadMore() = viewModelScope.launch { paginator.loadMore() }
+
+    fun deleteCar() = viewModelScope.launch {
+        cars.deleteCar(carId).onSuccess { deleted.value = true }
+    }
 }

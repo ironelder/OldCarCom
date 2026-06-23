@@ -1,5 +1,6 @@
 package com.lab.opengarage.ui.record
 
+import androidx.lifecycle.SavedStateHandle
 import com.lab.opengarage.fake.FakeAuthRepository
 import com.lab.opengarage.fake.FakeCarRepository
 import com.lab.opengarage.fake.FakePhotoRepository
@@ -33,7 +34,7 @@ class RecordEditViewModelTest {
         val auth = FakeAuthRepository().apply { state.value = User("uid1", "테스터", "") }
         val photo = FakePhotoRepository()
         car.store.value = listOf(Car("c1", "uid1", "현대", "프라이드", 2005, "현대_프라이드", "은마"))
-        return RecordEditViewModel(rec, photo, car, auth) to rec
+        return RecordEditViewModel(rec, photo, car, auth, SavedStateHandle()) to rec
     }
 
     @Test fun fuel_record_forced_private() = runTest {

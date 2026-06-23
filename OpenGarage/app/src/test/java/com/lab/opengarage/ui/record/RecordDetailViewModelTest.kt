@@ -1,6 +1,7 @@
 package com.lab.opengarage.ui.record
 
 import androidx.lifecycle.SavedStateHandle
+import com.lab.opengarage.fake.FakeAuthRepository
 import com.lab.opengarage.fake.FakeRecordRepository
 import com.lab.opengarage.model.Record
 import com.lab.opengarage.ui.common.UiState
@@ -26,7 +27,7 @@ class RecordDetailViewModelTest {
         val rec = FakeRecordRepository().apply {
             store.value = listOf(Record("r1", title = "타이밍벨트"))
         }
-        val vm = RecordDetailViewModel(rec, SavedStateHandle(mapOf("recordId" to "r1")))
+        val vm = RecordDetailViewModel(rec, FakeAuthRepository(), SavedStateHandle(mapOf("recordId" to "r1")))
         advanceUntilIdle()
         val s = vm.state.first { it is UiState.Success }
         assertEquals("타이밍벨트", (s as UiState.Success).data.title)
