@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.Flow
 interface RecordRepository {
     /** 차종 피드: 해당 modelKey 의 공개(isPublic=true) 기록만 최신순. */
     fun observeFeed(modelKey: String): Flow<List<Record>>
-    /** 특정 차의 정비+주유 전체 기록(날짜 내림차순). */
-    fun observeCarRecords(carId: String): Flow<List<Record>>
+    /** 특정 차(본인 소유)의 정비+주유 전체 기록(날짜 내림차순). 보안규칙상 ownerUid 제약 필요. */
+    fun observeCarRecords(carId: String, ownerUid: String): Flow<List<Record>>
     /** 내가 쓴 공개 정비기록. */
     fun observeMyPublicRecords(ownerUid: String): Flow<List<Record>>
     suspend fun getRecord(recordId: String): Result<Record>

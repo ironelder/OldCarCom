@@ -7,6 +7,7 @@ import com.lab.opengarage.model.RecordType
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -23,7 +24,7 @@ class RecordRepositoryImpl @Inject constructor(
             trySend(snap?.toObjects(Record::class.java) ?: emptyList())
         }
         awaitClose { reg.remove() }
-    }
+    }.catch { emit(emptyList()) } // 권한/인덱스 오류 시 크래시 대신 빈 결과
 
     override fun observeFeed(modelKey: String): Flow<List<Record>> = queryFlow(
         records.whereEqualTo("modelKey", modelKey)
@@ -31,8 +32,9 @@ class RecordRepositoryImpl @Inject constructor(
             .orderBy("createdAt", Query.Direction.DESCENDING)
     )
 
-    override fun observeCarRecords(carId: String): Flow<List<Record>> = queryFlow(
-        records.whereEqualTo("carId", carId)
+    override fun observeCarRecords(carId: String, ownerUid: String): Flow<List<Record>> = queryFlow(
+        records.whereEqualTo("ownerUid", ownerUid)
+            .whereEqualTo("carId", carId)
             .orderBy("date", Query.Direction.DESCENDING)
     )
 

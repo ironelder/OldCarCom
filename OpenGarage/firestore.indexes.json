@@ -22,6 +22,7 @@
       "collectionGroup": "records",
       "queryScope": "COLLECTION",
       "fields": [
+        { "fieldPath": "ownerUid", "order": "ASCENDING" },
         { "fieldPath": "carId", "order": "ASCENDING" },
         { "fieldPath": "date", "order": "DESCENDING" }
       ]

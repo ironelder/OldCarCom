@@ -12,8 +12,8 @@ class FakeRecordRepository : RecordRepository {
     override fun observeFeed(modelKey: String) =
         store.map { l -> l.filter { it.modelKey == modelKey && it.isPublic }.sortedByDescending { it.createdAt } }
 
-    override fun observeCarRecords(carId: String) =
-        store.map { l -> l.filter { it.carId == carId }.sortedByDescending { it.date } }
+    override fun observeCarRecords(carId: String, ownerUid: String) =
+        store.map { l -> l.filter { it.carId == carId && it.ownerUid == ownerUid }.sortedByDescending { it.date } }
 
     override fun observeMyPublicRecords(ownerUid: String) =
         store.map { l -> l.filter { it.ownerUid == ownerUid && it.type == RecordType.MAINTENANCE } }
