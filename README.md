@@ -144,7 +144,17 @@ users/{uid}/records/{recordId}/{photo}.jpg
 - [x] 구현 계획(플랜) 작성 → [docs/superpowers/plans/2026-06-23-opengarage-lab-mvp.md](docs/superpowers/plans/2026-06-23-opengarage-lab-mvp.md) (Task 0~14)
 - [x] 프로젝트 스캐폴딩 (Android Studio `OpenGarage/`, 패키지 `com.lab.opengarage`)
 - [x] Firebase 연결 (프로젝트 `opengarage-5154b`, google-services.json + Auth/Firestore/Storage 의존성, 빌드 성공)
-- [ ] Google 로그인 SHA-1 등록 + 콘솔 서비스 활성화 (Auth/Firestore/Storage)
-- [ ] 구현 (Task 2~14)
+- [x] Google 로그인 SHA-1 등록 + web_client_id
+- [x] 콘솔 서비스 활성화 (Auth Google / Firestore 서울 / Storage US-EAST1) — REST probe 403=활성 확인
+- [x] Task 2: 도메인 모델
+- [x] Task 3~5: Repository 인터페이스 / Firebase 구현체+Hilt / Fake
+- [x] Task 6~13: UI 전체 + 네비게이션 (화면 10개, ViewModel 8 + 테스트 7)
+- [x] Task 14: Firestore/Storage 보안 규칙 + 복합 인덱스 (`OpenGarage/firestore.rules`, `storage.rules`, `firestore.indexes.json`)
+- [ ] 보안 규칙·인덱스 콘솔/CLI 배포 (수동)
+- [ ] 실기기/에뮬 런타임 검증 (로그인→차추가→기록작성→피드)
+
+### 빌드 상태
+- `:app:assembleDebug` ✅ / `:app:testDebugUnitTest` ✅ (8 ViewModel 로직 검증)
+- 브랜치 `feature/opengarage-mvp`
 
 > **참고**: 실제 패키지는 `com.lab.opengarage` (플랜 문서의 `com.opengaragelab.app` 대신). 빌드 환경: AGP 9.2.1 / Kotlin 2.2.10 / Gradle 9.4.1 / compileSdk 37 / minSdk 28.
