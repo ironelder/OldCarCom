@@ -27,10 +27,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,7 +47,6 @@ import com.lab.opengarage.ui.common.InfiniteScrollEffect
 import com.lab.opengarage.ui.common.LoadingFooter
 import com.lab.opengarage.ui.common.RecordCard
 import com.lab.opengarage.ui.common.getGoogleIdToken
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,14 +59,22 @@ fun ProfileScreen(
     val loading by vm.paginator.loading.collectAsStateWithLifecycle()
     val endReached by vm.paginator.endReached.collectAsStateWithLifecycle()
     val error by vm.error.collectAsStateWithLifecycle()
+    val needsReauth by vm.needsReauth.collectAsStateWithLifecycle()
     val listState = rememberLazyListState()
-    val scope = rememberCoroutineScope()
     val context = LocalContext.current
     var showWithdraw by remember { mutableStateOf(false) }
     var deleteContent by remember { mutableStateOf(false) }
 
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { vm.refresh() }
     InfiniteScrollEffect(listState) { vm.loadMore() }
+
+    // 재인증 필요 시에만 Google 계정 선택창 → 토큰 받아 계정 삭제 재시도
+    LaunchedEffect(needsReauth) {
+        if (needsReauth) {
+            vm.onReauthHandled()
+            runCatching { getGoogleIdToken(context) }.onSuccess { vm.completeWithdraw(it) }
+        }
+    }
 
     if (showWithdraw) {
         AlertDialog(
@@ -93,15 +100,7 @@ fun ProfileScreen(
                 }
             },
             confirmButton = {
-                TextButton(onClick = {
-                    showWithdraw = false
-                    val delete = deleteContent
-                    scope.launch {
-                        runCatching { getGoogleIdToken(context) }
-                            .onSuccess { vm.withdraw(delete, it) }
-                        // 취소 시 무시
-                    }
-                }) {
+                TextButton(onClick = { showWithdraw = false; vm.withdraw(deleteContent) }) {
                     Text("탈퇴", color = MaterialTheme.colorScheme.error)
                 }
             },

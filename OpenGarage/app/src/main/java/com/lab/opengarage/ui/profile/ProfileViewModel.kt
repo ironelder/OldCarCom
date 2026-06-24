@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lab.opengarage.data.AuthRepository
 import com.lab.opengarage.data.CarRepository
+import com.lab.opengarage.data.ReauthRequiredException
 import com.lab.opengarage.data.RecordRepository
 import com.lab.opengarage.model.User
 import com.lab.opengarage.ui.common.Paginator
@@ -27,6 +28,8 @@ class ProfileViewModel @Inject constructor(
 
     val withdrawing = MutableStateFlow(false)
     val error = MutableStateFlow<String?>(null)
+    /** 계정 삭제에 재인증이 필요할 때 true → 화면이 Google 토큰 받아 completeWithdraw 호출. */
+    val needsReauth = MutableStateFlow(false)
 
     val user: StateFlow<User?> =
         auth.currentUser.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
@@ -47,7 +50,8 @@ class ProfileViewModel @Inject constructor(
      * 회원 탈퇴. [deleteContent]=true 면 내 기록·차량 전부 삭제,
      * false 면 글은 남기고 작성자 표기만 "비회원"으로 익명화한 뒤 계정 삭제.
      */
-    fun withdraw(deleteContent: Boolean, idToken: String) {
+    /** 1차: 재인증 없이 탈퇴 시도(최근 로그인 상태면 계정 선택창 없이 완료). */
+    fun withdraw(deleteContent: Boolean) {
         if (withdrawing.value) return
         viewModelScope.launch {
             withdrawing.value = true
@@ -60,12 +64,31 @@ class ProfileViewModel @Inject constructor(
             } else {
                 records.anonymizeOwner(id)
             }
-            auth.deleteAccount(idToken).onFailure {
-                error.value = "탈퇴 실패: 잠시 후 다시 시도해주세요"
-                withdrawing.value = false
-            }
-            // 성공 시 currentUser==null → 자동으로 로그인 화면 이동
+            finishDelete(null)
         }
+    }
+
+    /** 2차: 재인증 토큰으로 계정 삭제만 재시도(컨텐츠는 1차에서 처리됨). */
+    fun completeWithdraw(idToken: String) {
+        if (withdrawing.value) return
+        viewModelScope.launch {
+            withdrawing.value = true
+            finishDelete(idToken)
+        }
+    }
+
+    fun onReauthHandled() { needsReauth.value = false }
+
+    private suspend fun finishDelete(idToken: String?) {
+        auth.deleteAccount(idToken).onFailure { e ->
+            withdrawing.value = false
+            if (e is ReauthRequiredException) {
+                needsReauth.value = true // 화면이 Google 재인증 유도
+            } else {
+                error.value = "탈퇴 실패: 잠시 후 다시 시도해주세요"
+            }
+        }
+        // 성공 시 currentUser==null → 자동으로 로그인 화면 이동
     }
 }
 

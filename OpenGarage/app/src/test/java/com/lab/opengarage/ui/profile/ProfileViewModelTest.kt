@@ -45,7 +45,7 @@ class ProfileViewModelTest {
         }
         val cars = FakeCarRepository().apply { store.value = listOf(Car("c1", "uid1"), Car("c2", "other")) }
         val vm = ProfileViewModel(auth, rec, cars)
-        vm.withdraw(deleteContent = true, idToken = "token")
+        vm.withdraw(deleteContent = true)
         advanceUntilIdle()
         assertEquals(listOf("r2"), rec.store.value.map { it.recordId }) // 내 기록만 삭제
         assertEquals(listOf("c2"), cars.store.value.map { it.carId })   // 내 차만 삭제
@@ -58,7 +58,7 @@ class ProfileViewModelTest {
             store.value = listOf(Record("r1", ownerUid = "uid1", ownerNickname = "테스터", type = RecordType.MAINTENANCE))
         }
         val vm = ProfileViewModel(auth, rec, FakeCarRepository())
-        vm.withdraw(deleteContent = false, idToken = "token")
+        vm.withdraw(deleteContent = false)
         advanceUntilIdle()
         assertTrue(rec.store.value.isNotEmpty())                        // 글 유지
         assertEquals("비회원", rec.store.value.single().ownerNickname)   // 작성자 익명화

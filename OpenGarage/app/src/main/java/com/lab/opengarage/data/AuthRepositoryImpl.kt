@@ -1,6 +1,7 @@
 package com.lab.opengarage.data
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.lab.opengarage.model.User
@@ -42,11 +43,20 @@ class AuthRepositoryImpl @Inject constructor(
         auth.signOut()
     }
 
-    override suspend fun deleteAccount(idToken: String): Result<Unit> = runCatching {
-        val u = auth.currentUser ?: error("로그인 필요")
-        // 계정 삭제는 최근 로그인 필요 → Google 자격증명으로 재인증
-        u.reauthenticate(GoogleAuthProvider.getCredential(idToken, null)).await()
-        db.collection("users").document(u.uid).delete().await()
-        u.delete().await()
+    override suspend fun deleteAccount(idToken: String?): Result<Unit> {
+        val u = auth.currentUser ?: return Result.failure(IllegalStateException("로그인 필요"))
+        return try {
+            // idToken 있으면 재인증, 없으면 최근 로그인 상태로 바로 시도
+            if (idToken != null) {
+                u.reauthenticate(GoogleAuthProvider.getCredential(idToken, null)).await()
+            }
+            db.collection("users").document(u.uid).delete().await()
+            u.delete().await()
+            Result.success(Unit)
+        } catch (e: FirebaseAuthRecentLoginRequiredException) {
+            Result.failure(ReauthRequiredException())
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }
