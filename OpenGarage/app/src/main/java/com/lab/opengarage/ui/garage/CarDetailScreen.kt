@@ -29,6 +29,7 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lab.opengarage.ui.common.InfiniteScrollEffect
 import com.lab.opengarage.ui.common.LoadingFooter
+import com.lab.opengarage.ui.common.OverflowMenu
 import com.lab.opengarage.ui.common.RecordCard
 
 @Composable
@@ -75,10 +76,10 @@ fun CarDetailScreen(
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 TextButton(onClick = onBack) { Text("← 뒤로") }
                 car?.let { c ->
-                    Row {
-                        TextButton(onClick = { onEditCar(c.carId) }) { Text("수정") }
-                        TextButton(onClick = { confirmDelete = true }) { Text("삭제") }
-                    }
+                    OverflowMenu(
+                        onEdit = { onEditCar(c.carId) },
+                        onDelete = { confirmDelete = true },
+                    )
                 }
             }
             car?.let { c ->

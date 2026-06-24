@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lab.opengarage.model.RecordType
+import com.lab.opengarage.ui.common.OverflowMenu
 import com.lab.opengarage.ui.common.PhotoPager
 import com.lab.opengarage.ui.common.UiState
 import com.lab.opengarage.ui.common.formatDate
@@ -62,10 +63,10 @@ fun RecordDetailScreen(
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             TextButton(onClick = onBack) { Text("← 뒤로") }
             if (mine && s is UiState.Success) {
-                Row {
-                    TextButton(onClick = { onEdit(s.data.recordId, s.data.carId) }) { Text("수정") }
-                    TextButton(onClick = { confirmDelete = true }) { Text("삭제") }
-                }
+                OverflowMenu(
+                    onEdit = { onEdit(s.data.recordId, s.data.carId) },
+                    onDelete = { confirmDelete = true },
+                )
             }
         }
 
