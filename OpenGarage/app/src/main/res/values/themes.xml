@@ -2,4 +2,11 @@
 <resources>
 
     <style name="Theme.OpenGarage" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <!-- Android 12+ 및 하위호환 스플래시 (core-splashscreen) -->
+    <style name="Theme.OpenGarage.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/brand_splash</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.OpenGarage</item>
+    </style>
 </resources>
