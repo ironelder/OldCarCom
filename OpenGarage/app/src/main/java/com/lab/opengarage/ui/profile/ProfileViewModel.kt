@@ -47,10 +47,11 @@ class ProfileViewModel @Inject constructor(
      * 회원 탈퇴. [deleteContent]=true 면 내 기록·차량 전부 삭제,
      * false 면 글은 남기고 작성자 표기만 "비회원"으로 익명화한 뒤 계정 삭제.
      */
-    fun withdraw(deleteContent: Boolean) {
+    fun withdraw(deleteContent: Boolean, idToken: String) {
         if (withdrawing.value) return
         viewModelScope.launch {
             withdrawing.value = true
+            error.value = null
             ensureUid()
             val id = uid ?: run { error.value = "로그인 필요"; withdrawing.value = false; return@launch }
             if (deleteContent) {
@@ -59,8 +60,8 @@ class ProfileViewModel @Inject constructor(
             } else {
                 records.anonymizeOwner(id)
             }
-            auth.deleteAccount().onFailure {
-                error.value = "탈퇴 실패: 다시 로그인 후 시도해주세요"
+            auth.deleteAccount(idToken).onFailure {
+                error.value = "탈퇴 실패: 잠시 후 다시 시도해주세요"
                 withdrawing.value = false
             }
             // 성공 시 currentUser==null → 자동으로 로그인 화면 이동

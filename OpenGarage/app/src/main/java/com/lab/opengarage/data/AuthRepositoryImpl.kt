@@ -42,9 +42,11 @@ class AuthRepositoryImpl @Inject constructor(
         auth.signOut()
     }
 
-    override suspend fun deleteAccount(): Result<Unit> = runCatching {
+    override suspend fun deleteAccount(idToken: String): Result<Unit> = runCatching {
         val u = auth.currentUser ?: error("로그인 필요")
+        // 계정 삭제는 최근 로그인 필요 → Google 자격증명으로 재인증
+        u.reauthenticate(GoogleAuthProvider.getCredential(idToken, null)).await()
         db.collection("users").document(u.uid).delete().await()
-        u.delete().await() // 최근 로그인 필요 시 예외 → 호출측에서 재로그인 안내
+        u.delete().await()
     }
 }

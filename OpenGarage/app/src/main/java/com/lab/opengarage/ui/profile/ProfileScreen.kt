@@ -30,11 +30,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -44,6 +46,8 @@ import coil.compose.AsyncImage
 import com.lab.opengarage.ui.common.InfiniteScrollEffect
 import com.lab.opengarage.ui.common.LoadingFooter
 import com.lab.opengarage.ui.common.RecordCard
+import com.lab.opengarage.ui.common.getGoogleIdToken
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,6 +61,8 @@ fun ProfileScreen(
     val endReached by vm.paginator.endReached.collectAsStateWithLifecycle()
     val error by vm.error.collectAsStateWithLifecycle()
     val listState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
     var showWithdraw by remember { mutableStateOf(false) }
     var deleteContent by remember { mutableStateOf(false) }
 
@@ -87,7 +93,15 @@ fun ProfileScreen(
                 }
             },
             confirmButton = {
-                TextButton(onClick = { showWithdraw = false; vm.withdraw(deleteContent) }) {
+                TextButton(onClick = {
+                    showWithdraw = false
+                    val delete = deleteContent
+                    scope.launch {
+                        runCatching { getGoogleIdToken(context) }
+                            .onSuccess { vm.withdraw(delete, it) }
+                        // 취소 시 무시
+                    }
+                }) {
                     Text("탈퇴", color = MaterialTheme.colorScheme.error)
                 }
             },

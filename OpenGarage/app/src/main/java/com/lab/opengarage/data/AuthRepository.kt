@@ -8,6 +8,6 @@ interface AuthRepository {
     val currentUser: Flow<User?>
     suspend fun signInWithGoogle(idToken: String): Result<User>
     suspend fun signOut()
-    /** 사용자 문서 + Firebase Auth 계정 삭제(회원 탈퇴). 최근 로그인 필요 시 실패할 수 있음. */
-    suspend fun deleteAccount(): Result<Unit>
+    /** Google [idToken] 으로 재인증 후 사용자 문서 + Firebase Auth 계정 삭제(회원 탈퇴). */
+    suspend fun deleteAccount(idToken: String): Result<Unit>
 }
