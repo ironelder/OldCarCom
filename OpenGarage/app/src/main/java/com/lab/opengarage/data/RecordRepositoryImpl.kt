@@ -64,4 +64,20 @@ class RecordRepositoryImpl @Inject constructor(
         records.document(recordId).delete().await()
         Unit
     }
+
+    override suspend fun deleteAllByOwner(ownerUid: String): Result<Unit> = runCatching {
+        val snap = records.whereEqualTo("ownerUid", ownerUid).get().await()
+        val batch = db.batch()
+        snap.documents.forEach { batch.delete(it.reference) }
+        batch.commit().await()
+        Unit
+    }
+
+    override suspend fun anonymizeOwner(ownerUid: String): Result<Unit> = runCatching {
+        val snap = records.whereEqualTo("ownerUid", ownerUid).get().await()
+        val batch = db.batch()
+        snap.documents.forEach { batch.update(it.reference, "ownerNickname", "비회원") }
+        batch.commit().await()
+        Unit
+    }
 }

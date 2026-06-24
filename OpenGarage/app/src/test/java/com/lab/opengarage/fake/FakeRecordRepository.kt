@@ -57,4 +57,14 @@ class FakeRecordRepository : RecordRepository {
         store.value = store.value.filterNot { it.recordId == recordId }
         return Result.success(Unit)
     }
+
+    override suspend fun deleteAllByOwner(ownerUid: String): Result<Unit> {
+        store.value = store.value.filterNot { it.ownerUid == ownerUid }
+        return Result.success(Unit)
+    }
+
+    override suspend fun anonymizeOwner(ownerUid: String): Result<Unit> {
+        store.value = store.value.map { if (it.ownerUid == ownerUid) it.copy(ownerNickname = "비회원") else it }
+        return Result.success(Unit)
+    }
 }

@@ -31,4 +31,9 @@ class FakeCarRepository : CarRepository {
         store.value = store.value.filterNot { it.carId == carId }
         return Result.success(Unit)
     }
+
+    override suspend fun deleteAllByOwner(ownerUid: String): Result<Unit> {
+        store.value = store.value.filterNot { it.ownerUid == ownerUid }
+        return Result.success(Unit)
+    }
 }

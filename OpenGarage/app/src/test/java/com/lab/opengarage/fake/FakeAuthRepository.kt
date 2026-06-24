@@ -17,4 +17,9 @@ class FakeAuthRepository : AuthRepository {
     override suspend fun signOut() {
         state.value = null
     }
+
+    override suspend fun deleteAccount(): Result<Unit> {
+        state.value = null
+        return Result.success(Unit)
+    }
 }

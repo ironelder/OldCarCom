@@ -20,4 +20,8 @@ interface RecordRepository {
     suspend fun getRecord(recordId: String): Result<Record>
     suspend fun upsertRecord(record: Record): Result<String>
     suspend fun deleteRecord(recordId: String): Result<Unit>
+    /** 해당 사용자의 모든 기록 삭제(회원 탈퇴 - 글 삭제 선택 시). */
+    suspend fun deleteAllByOwner(ownerUid: String): Result<Unit>
+    /** 해당 사용자의 모든 기록 작성자 표기를 "비회원"으로 치환(글 유지 선택 시). */
+    suspend fun anonymizeOwner(ownerUid: String): Result<Unit>
 }

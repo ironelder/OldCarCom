@@ -41,4 +41,10 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun signOut() {
         auth.signOut()
     }
+
+    override suspend fun deleteAccount(): Result<Unit> = runCatching {
+        val u = auth.currentUser ?: error("로그인 필요")
+        db.collection("users").document(u.uid).delete().await()
+        u.delete().await() // 최근 로그인 필요 시 예외 → 호출측에서 재로그인 안내
+    }
 }

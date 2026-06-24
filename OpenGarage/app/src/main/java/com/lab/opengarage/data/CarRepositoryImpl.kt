@@ -42,4 +42,12 @@ class CarRepositoryImpl @Inject constructor(
         cars.document(carId).delete().await()
         Unit
     }
+
+    override suspend fun deleteAllByOwner(ownerUid: String): Result<Unit> = runCatching {
+        val snap = cars.whereEqualTo("ownerUid", ownerUid).get().await()
+        val batch = db.batch()
+        snap.documents.forEach { batch.delete(it.reference) }
+        batch.commit().await()
+        Unit
+    }
 }

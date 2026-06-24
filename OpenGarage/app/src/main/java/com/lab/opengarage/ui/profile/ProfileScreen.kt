@@ -14,7 +14,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -23,8 +25,12 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,10 +55,45 @@ fun ProfileScreen(
     val myRecords by vm.paginator.items.collectAsStateWithLifecycle()
     val loading by vm.paginator.loading.collectAsStateWithLifecycle()
     val endReached by vm.paginator.endReached.collectAsStateWithLifecycle()
+    val error by vm.error.collectAsStateWithLifecycle()
     val listState = rememberLazyListState()
+    var showWithdraw by remember { mutableStateOf(false) }
+    var deleteContent by remember { mutableStateOf(false) }
 
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { vm.refresh() }
     InfiniteScrollEffect(listState) { vm.loadMore() }
+
+    if (showWithdraw) {
+        AlertDialog(
+            onDismissRequest = { showWithdraw = false },
+            title = { Text("회원 탈퇴") },
+            text = {
+                Column {
+                    Text("탈퇴하면 계정이 삭제됩니다. 이 작업은 되돌릴 수 없어요.")
+                    Row(
+                        Modifier.fillMaxWidth().padding(top = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Checkbox(checked = deleteContent, onCheckedChange = { deleteContent = it })
+                        Text("작성한 글·차고도 함께 삭제")
+                    }
+                    Text(
+                        if (deleteContent) "내 기록과 차량이 모두 삭제됩니다."
+                        else "글은 남고 작성자는 '비회원'으로 표시됩니다.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(start = 4.dp, top = 4.dp),
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showWithdraw = false; vm.withdraw(deleteContent) }) {
+                    Text("탈퇴", color = MaterialTheme.colorScheme.error)
+                }
+            },
+            dismissButton = { TextButton(onClick = { showWithdraw = false }) { Text("취소") } },
+        )
+    }
 
     Scaffold(
         topBar = { CenterAlignedTopAppBar(title = { Text("프로필") }) },
@@ -92,6 +133,20 @@ fun ProfileScreen(
             ) {
                 Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = null, modifier = Modifier.size(18.dp))
                 Text("  로그아웃")
+            }
+            TextButton(
+                onClick = { deleteContent = false; showWithdraw = true },
+                modifier = Modifier.padding(horizontal = 16.dp),
+            ) {
+                Text("회원 탈퇴", color = MaterialTheme.colorScheme.error)
+            }
+            error?.let {
+                Text(
+                    it,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                )
             }
             HorizontalDivider(Modifier.padding(vertical = 12.dp))
             Text(
