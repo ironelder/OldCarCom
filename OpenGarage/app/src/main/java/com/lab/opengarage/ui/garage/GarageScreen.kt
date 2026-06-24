@@ -6,9 +6,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,6 +29,7 @@ import com.lab.opengarage.ui.common.CarCard
 import com.lab.opengarage.ui.common.InfiniteScrollEffect
 import com.lab.opengarage.ui.common.LoadingFooter
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GarageScreen(
     onAddCar: () -> Unit,
@@ -35,30 +42,35 @@ fun GarageScreen(
     val endReached by vm.paginator.endReached.collectAsStateWithLifecycle()
     val listState = rememberLazyListState()
 
-    // 화면 복귀 시 새로고침(차 추가 후 반영)
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { vm.refresh() }
     InfiniteScrollEffect(listState) { vm.loadMore() }
 
-    Box(Modifier.fillMaxSize()) {
-        when {
-            !initialized && loading -> CircularProgressIndicator(Modifier.align(Alignment.Center))
-            initialized && cars.isEmpty() -> Text(
-                "아직 등록한 차가 없어요. + 로 추가하세요.",
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.align(Alignment.Center).padding(16.dp),
+    Scaffold(
+        topBar = { CenterAlignedTopAppBar(title = { Text("내 차고") }) },
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                onClick = onAddCar,
+                icon = { Icon(Icons.Filled.Add, contentDescription = null) },
+                text = { Text("차 추가") },
             )
-            else -> LazyColumn(state = listState, modifier = Modifier.fillMaxSize()) {
-                items(cars, key = { it.carId }) { car ->
-                    CarCard(car) { onCarClick(car.carId) }
+        },
+    ) { padding ->
+        Box(Modifier.fillMaxSize().padding(padding)) {
+            when {
+                !initialized && loading -> CircularProgressIndicator(Modifier.align(Alignment.Center))
+                initialized && cars.isEmpty() -> Text(
+                    "아직 등록한 차가 없어요.\n+ 로 첫 차를 추가하세요.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.align(Alignment.Center).padding(16.dp),
+                )
+                else -> LazyColumn(state = listState, modifier = Modifier.fillMaxSize()) {
+                    items(cars, key = { it.carId }) { car ->
+                        CarCard(car) { onCarClick(car.carId) }
+                    }
+                    if (loading && !endReached) item { LoadingFooter() }
                 }
-                if (loading && !endReached) item { LoadingFooter() }
             }
-        }
-        FloatingActionButton(
-            onClick = onAddCar,
-            modifier = Modifier.align(Alignment.BottomEnd).padding(24.dp),
-        ) {
-            Text("+")
         }
     }
 }

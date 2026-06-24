@@ -17,12 +17,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,6 +48,7 @@ import com.lab.opengarage.model.FuelType
 import com.lab.opengarage.model.RecordType
 import com.lab.opengarage.ui.common.fuelLabel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecordEditScreen(
     carId: String,
@@ -63,7 +70,6 @@ fun RecordEditScreen(
     var fuelType by remember { mutableStateOf(FuelType.GASOLINE) }
     var photoUris by remember { mutableStateOf<List<Uri>>(emptyList()) }
 
-    // 수정 모드: 기존 값 1회 프리필
     LaunchedEffect(initial) {
         initial?.let {
             type = it.type
@@ -82,111 +88,111 @@ fun RecordEditScreen(
         ActivityResultContracts.PickMultipleVisualMedia(5),
     ) { uris -> photoUris = uris }
 
-    Box(Modifier.fillMaxSize()) {
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
-            .imePadding()
-            .padding(16.dp),
-    ) {
-        Text(if (vm.editing) "기록 수정" else "기록 작성", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(bottom = 12.dp))
-
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            FilterChip(
-                selected = type == RecordType.MAINTENANCE,
-                onClick = { type = RecordType.MAINTENANCE },
-                label = { Text("정비") },
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = { Text(if (vm.editing) "기록 수정" else "기록 작성") },
+                navigationIcon = {
+                    IconButton(onClick = onDone) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "뒤로")
+                    }
+                },
             )
-            FilterChip(
-                selected = type == RecordType.FUEL,
-                onClick = { type = RecordType.FUEL },
-                label = { Text("주유") },
-            )
-        }
-
-        OutlinedTextField(title, { title = it }, label = { Text("제목") }, modifier = Modifier.fillMaxWidth().padding(top = 8.dp))
-        OutlinedTextField(
-            mileage, { mileage = it.filter(Char::isDigit) }, label = { Text("주행거리(km)") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-        )
-        OutlinedTextField(
-            cost, { cost = it.filter(Char::isDigit) }, label = { Text("금액(원)") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-        )
-        OutlinedTextField(description, { description = it }, label = { Text("내용/노하우") }, modifier = Modifier.fillMaxWidth().padding(top = 8.dp))
-
-        if (type == RecordType.FUEL) {
-            OutlinedTextField(
-                liters, { liters = it.filter { c -> c.isDigit() || c == '.' } }, label = { Text("주유량(L)") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-            )
-            Row(Modifier.padding(top = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                FuelType.entries.forEach { ft ->
-                    FilterChip(
-                        selected = fuelType == ft,
-                        onClick = { fuelType = ft },
-                        label = { Text(fuelLabel(ft)) },
-                    )
-                }
-            }
-        } else {
-            Row(
-                Modifier.fillMaxWidth().padding(top = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text("공개 (차종 피드 노출)", modifier = Modifier.weight(1f))
-                Switch(checked = isPublic, onCheckedChange = { isPublic = it })
-            }
-        }
-
-        OutlinedButton(
-            onClick = {
-                picker.launch(
-                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
-                )
-            },
-            modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-        ) {
-            Text(if (photoUris.isEmpty()) "사진 첨부" else "사진 ${photoUris.size}장 선택됨")
-        }
-
-        Button(
-            onClick = {
-                vm.save(
-                    RecordForm(
-                        carId = effectiveCarId,
-                        type = type,
-                        title = title.trim(),
-                        mileageKm = mileage.toIntOrNull() ?: 0,
-                        description = description.trim(),
-                        cost = cost.toLongOrNull() ?: 0L,
-                        liters = if (type == RecordType.FUEL) liters.toDoubleOrNull() else null,
-                        fuelType = if (type == RecordType.FUEL) fuelType else null,
-                        isPublic = isPublic,
-                    ),
-                    photoUris,
-                )
-            },
-            enabled = title.isNotBlank() && effectiveCarId.isNotBlank() && !saving,
-            modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
-        ) {
-            Text("저장")
-        }
-    }
-
-        if (saving) {
-            Box(
+        },
+    ) { padding ->
+        Box(Modifier.fillMaxSize().padding(padding)) {
+            Column(
                 Modifier
                     .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.4f))
-                    .clickable(enabled = true) {}, // 하단 클릭 차단
-                contentAlignment = Alignment.Center,
+                    .verticalScroll(rememberScrollState())
+                    .imePadding()
+                    .padding(16.dp),
             ) {
-                CircularProgressIndicator()
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    FilterChip(
+                        selected = type == RecordType.MAINTENANCE,
+                        onClick = { type = RecordType.MAINTENANCE },
+                        label = { Text("정비") },
+                    )
+                    FilterChip(
+                        selected = type == RecordType.FUEL,
+                        onClick = { type = RecordType.FUEL },
+                        label = { Text("주유") },
+                    )
+                }
+
+                OutlinedTextField(title, { title = it }, label = { Text("제목") }, modifier = Modifier.fillMaxWidth().padding(top = 8.dp))
+                OutlinedTextField(
+                    mileage, { mileage = it.filter(Char::isDigit) }, label = { Text("주행거리(km)") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                )
+                OutlinedTextField(
+                    cost, { cost = it.filter(Char::isDigit) }, label = { Text("금액(원)") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                )
+                OutlinedTextField(description, { description = it }, label = { Text("내용/노하우") }, modifier = Modifier.fillMaxWidth().padding(top = 8.dp))
+
+                if (type == RecordType.FUEL) {
+                    OutlinedTextField(
+                        liters, { liters = it.filter { c -> c.isDigit() || c == '.' } }, label = { Text("주유량(L)") },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                    )
+                    Row(Modifier.padding(top = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        FuelType.entries.forEach { ft ->
+                            FilterChip(selected = fuelType == ft, onClick = { fuelType = ft }, label = { Text(fuelLabel(ft)) })
+                        }
+                    }
+                } else {
+                    Row(Modifier.fillMaxWidth().padding(top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Text("공개 (차종 피드 노출)", modifier = Modifier.weight(1f))
+                        Switch(checked = isPublic, onCheckedChange = { isPublic = it })
+                    }
+                }
+
+                OutlinedButton(
+                    onClick = { picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) },
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                ) {
+                    Text(if (photoUris.isEmpty()) "사진 첨부" else "사진 ${photoUris.size}장 선택됨")
+                }
+
+                Button(
+                    onClick = {
+                        vm.save(
+                            RecordForm(
+                                carId = effectiveCarId,
+                                type = type,
+                                title = title.trim(),
+                                mileageKm = mileage.toIntOrNull() ?: 0,
+                                description = description.trim(),
+                                cost = cost.toLongOrNull() ?: 0L,
+                                liters = if (type == RecordType.FUEL) liters.toDoubleOrNull() else null,
+                                fuelType = if (type == RecordType.FUEL) fuelType else null,
+                                isPublic = isPublic,
+                            ),
+                            photoUris,
+                        )
+                    },
+                    enabled = title.isNotBlank() && effectiveCarId.isNotBlank() && !saving,
+                    modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+                ) {
+                    Text("저장")
+                }
+            }
+
+            if (saving) {
+                Box(
+                    Modifier
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.4f))
+                        .clickable(enabled = true) {},
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator()
+                }
             }
         }
     }

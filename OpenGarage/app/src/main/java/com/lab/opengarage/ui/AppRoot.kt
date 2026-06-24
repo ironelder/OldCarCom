@@ -1,6 +1,11 @@
 package com.lab.opengarage.ui
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DirectionsCar
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -8,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -27,12 +33,12 @@ import com.lab.opengarage.ui.profile.ProfileScreen
 import com.lab.opengarage.ui.record.RecordDetailScreen
 import com.lab.opengarage.ui.record.RecordEditScreen
 
-private data class Tab(val route: String, val label: String, val icon: String)
+private data class Tab(val route: String, val label: String, val icon: ImageVector)
 
 private val tabs = listOf(
-    Tab(Routes.FEED, "차종피드", "🏠"),
-    Tab(Routes.GARAGE, "내 차고", "🔧"),
-    Tab(Routes.PROFILE, "프로필", "👤"),
+    Tab(Routes.FEED, "차종피드", Icons.Filled.Home),
+    Tab(Routes.GARAGE, "내 차고", Icons.Filled.DirectionsCar),
+    Tab(Routes.PROFILE, "프로필", Icons.Filled.Person),
 )
 
 @Composable
@@ -66,7 +72,7 @@ private fun MainApp() {
                                     restoreState = true
                                 }
                             },
-                            icon = { Text(tab.icon) },
+                            icon = { Icon(tab.icon, contentDescription = tab.label) },
                             label = { Text(tab.label) },
                         )
                     }
