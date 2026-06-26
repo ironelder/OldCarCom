@@ -42,7 +42,7 @@ fun LoginScreen(vm: LoginViewModel = hiltViewModel()) {
     ) {
         Text("오픈개러지", style = MaterialTheme.typography.headlineMedium)
         Text(
-            "올드카 정비노트를 함께 나눠요",
+            "클래식카 정비노트를 함께 나눠요",
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(top = 8.dp, bottom = 32.dp),
         )

@@ -4,6 +4,18 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
+
+    <!-- 정비 상징: 렌치(라쳇) — 차 뒤 대각선 배치 (탠) -->
+    <group android:name="wrench" android:rotation="40" android:pivotX="54" android:pivotY="54">
+        <path
+            android:fillColor="#ECCBB0"
+            android:fillType="evenOdd"
+            android:pathData="M54,27 m-9,0 a9,9 0 1,0 18,0 a9,9 0 1,0 -18,0 M54,27 m-4.5,0 a4.5,4.5 0 1,0 9,0 a4.5,4.5 0 1,0 -9,0" />
+        <path
+            android:fillColor="#ECCBB0"
+            android:pathData="M50.5,30 L57.5,30 L57.5,80 Q57.5,83 54,83 Q50.5,83 50.5,80 Z" />
+    </group>
+
     <!-- 클래식카 측면 실루엣 (크림) -->
     <path
         android:fillColor="#FFF6EC"

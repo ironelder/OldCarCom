@@ -2,7 +2,7 @@ package com.lab.opengarage.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// OpenGarage 브랜드: 번트 오렌지(엠버) + 따뜻한 차콜 — 올드카 개러지 무드 (Material 3)
+// OpenGarage 브랜드: 번트 오렌지(엠버) + 따뜻한 차콜 — 클래식카 개러지 무드 (Material 3)
 
 // Light
 val md_primary = Color(0xFFA63A1E)
