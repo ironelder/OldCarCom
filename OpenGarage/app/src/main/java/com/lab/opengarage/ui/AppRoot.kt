@@ -67,7 +67,7 @@ fun AppRoot(rootVm: RootViewModel = hiltViewModel()) {
 }
 
 // 시스템 스플래시(Theme.OpenGarage.Starting)와 같은 배경·엠블럼으로 이어지는 브랜드 스플래시
-private val SplashBackground = Color(0xFF7A2A12)
+private val SplashBackground = Color(0xFF043320)
 private val SplashCream = Color(0xFFFFF6EC)
 
 @Composable

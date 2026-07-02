@@ -3,6 +3,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <!-- 스플래시/아이콘 브랜드 -->
-    <color name="brand_splash">#FF7A2A12</color>
-    <color name="ic_launcher_background">#FFB5431F</color>
+    <color name="brand_splash">#FF043320</color>
+    <color name="ic_launcher_background">#FF156038</color>
 </resources>
