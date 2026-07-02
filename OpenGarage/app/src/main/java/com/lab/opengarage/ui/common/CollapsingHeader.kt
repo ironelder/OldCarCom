@@ -22,22 +22,21 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.layout
-import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.dp
 import kotlin.math.roundToInt
 
 /**
- * 접히는 상단 헤더: 타이틀은 항상 고정, [expandedContent] 는 스크롤에 따라 접힘/펼침.
- * 스크롤 최상단 → 검색 영역 완전 노출, 아래로 스크롤 → 검색 영역 접히고 타이틀만 남음.
- * 아래로 당기면(over-scroll top) 다시 펼쳐짐.
+ * 접히는 상단 헤더: 타이틀은 항상 고정, [expandedContent] 는 리스트 스크롤에 따라 접힘/펼침.
+ * 리스트 최상단 → 검색 영역 완전 노출 / 아래로 스크롤 → 접히고 타이틀만 / 위로 스크롤 → 다시 펼침.
+ *
+ * exitUntilCollapsedScrollBehavior 의 heightOffset(0~limit) 을 그대로 배치에 반영한다.
+ * Layout 안에서 확장 콘텐츠를 항상 원본 높이로 측정하므로 축소-재측정 피드백 루프가 없다.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,41 +47,46 @@ fun CollapsingHeader(
     expandedContent: @Composable () -> Unit,
 ) {
     val fraction = scrollBehavior.state.collapsedFraction
-    var fullHeightPx by remember { mutableIntStateOf(0) }
-
     Surface(
         modifier = modifier.fillMaxWidth(),
         color = MaterialTheme.colorScheme.surface,
         shadowElevation = (3f * fraction).dp,
     ) {
-        androidx.compose.foundation.layout.Column(Modifier.clipToBounds()) {
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .height(56.dp)
-                    .padding(horizontal = 16.dp),
-                contentAlignment = Alignment.CenterStart,
-            ) {
-                Text(title, style = MaterialTheme.typography.headlineSmall)
+        Layout(
+            modifier = Modifier.clipToBounds(),
+            content = {
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(56.dp)
+                        .padding(horizontal = 16.dp),
+                    contentAlignment = Alignment.CenterStart,
+                ) {
+                    Text(title, style = MaterialTheme.typography.headlineSmall)
+                }
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .graphicsLayer { alpha = 1f - fraction },
+                ) { expandedContent() }
+            },
+        ) { measurables, constraints ->
+            val loose = constraints.copy(minHeight = 0)
+            val titleP = measurables[0].measure(loose)
+            val expandedP = measurables[1].measure(loose)
+
+            val limit = -expandedP.height.toFloat()
+            if (scrollBehavior.state.heightOffsetLimit != limit) {
+                scrollBehavior.state.heightOffsetLimit = limit
             }
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .onSizeChanged {
-                        if (it.height > 0 && it.height != fullHeightPx) {
-                            fullHeightPx = it.height
-                            scrollBehavior.state.heightOffsetLimit = -it.height.toFloat()
-                        }
-                    }
-                    .layout { measurable, constraints ->
-                        val placeable = measurable.measure(constraints)
-                        val h = (placeable.height * (1f - fraction)).roundToInt()
-                        layout(placeable.width, h) {
-                            placeable.place(0, h - placeable.height)
-                        }
-                    }
-                    .graphicsLayer { alpha = 1f - fraction },
-            ) { expandedContent() }
+            val offset = scrollBehavior.state.heightOffset.coerceIn(limit, 0f).roundToInt()
+            val expandedVisible = (expandedP.height + offset).coerceAtLeast(0)
+            val totalH = titleP.height + expandedVisible
+
+            layout(constraints.maxWidth, totalH) {
+                titleP.place(0, 0)
+                expandedP.place(0, titleP.height + offset)
+            }
         }
     }
 }
