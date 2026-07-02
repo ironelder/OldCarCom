@@ -35,3 +35,15 @@ npm run import            # 실제 등록
 | photos | | `["images/a.jpg", ...]` 상대경로 배열 |
 
 등록된 기록은 `type=MAINTENANCE`, `shared=true` 로 차종 피드에 노출됩니다.
+
+## 시드 콘텐츠 (posts.seed.json)
+
+`posts.seed.json` 은 오픈개러지가 **직접 작성한 원본** 클래식카 정비 레퍼런스 12건(작성자 "오픈개러지 가이드", 사진 없음)입니다. 남의 글을 복제한 것이 아니라 일반 정비 지식을 자체 서술한 것이라 자유롭게 사용 가능. 앱 초기 콘텐츠로 채우려면:
+
+```bash
+cp posts.seed.json posts.json
+npm run import -- --dry   # 미리보기
+npm run import            # 등록
+```
+
+> 시드는 참고용 가이드입니다. 실제 정비 시 차종·연식별 정비지침서로 수치를 재확인하세요.
