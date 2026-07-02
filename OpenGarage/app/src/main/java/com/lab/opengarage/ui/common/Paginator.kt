@@ -16,6 +16,7 @@ class Paginator<T>(
 ) {
     val items = MutableStateFlow<List<T>>(emptyList())
     val loading = MutableStateFlow(false)
+    val refreshing = MutableStateFlow(false) // 당겨서 새로고침 인디케이터용
     val endReached = MutableStateFlow(false)
     /** 첫 페이지 로드를 1회라도 끝냈는지 — 빈 결과와 로딩 전 상태 구분용. */
     val initialized = MutableStateFlow(false)
@@ -38,6 +39,7 @@ class Paginator<T>(
         if (inFlight) return
         inFlight = true
         loading.value = true
+        refreshing.value = true
         try {
             val p = source(null, pageSize)
             cursor = p.cursor
@@ -49,6 +51,7 @@ class Paginator<T>(
         } finally {
             initialized.value = true
             loading.value = false
+            refreshing.value = false
             inFlight = false
         }
     }

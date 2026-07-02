@@ -52,4 +52,9 @@ class FeedViewModel @Inject constructor(
     fun loadMore() {
         viewModelScope.launch { paginator.loadMore() }
     }
+
+    /** 당겨서 새로고침: 현재 조건(전체/제조사/차종) 첫 페이지를 서버에서 다시 로드. */
+    fun refresh() {
+        viewModelScope.launch { paginator.refresh() }
+    }
 }

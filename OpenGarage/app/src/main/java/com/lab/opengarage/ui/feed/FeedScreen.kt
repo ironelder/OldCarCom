@@ -17,6 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -41,6 +42,7 @@ fun FeedScreen(
     val loading by vm.paginator.loading.collectAsStateWithLifecycle()
     val initialized by vm.paginator.initialized.collectAsStateWithLifecycle()
     val endReached by vm.paginator.endReached.collectAsStateWithLifecycle()
+    val refreshing by vm.paginator.refreshing.collectAsStateWithLifecycle()
     val listState = rememberLazyListState()
 
     InfiniteScrollEffect(listState) { vm.loadMore() }
@@ -73,7 +75,11 @@ fun FeedScreen(
                 )
             }
 
-            Box(Modifier.fillMaxSize()) {
+            PullToRefreshBox(
+                isRefreshing = refreshing,
+                onRefresh = { vm.refresh() },
+                modifier = Modifier.fillMaxSize(),
+            ) {
                 when {
                     !initialized -> CircularProgressIndicator(Modifier.align(Alignment.Center))
                     records.isEmpty() -> Text(
