@@ -32,6 +32,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,7 +49,9 @@ import coil.compose.AsyncImage
 import com.lab.opengarage.ui.common.InfiniteScrollEffect
 import com.lab.opengarage.ui.common.LoadingFooter
 import com.lab.opengarage.ui.common.RecordCard
+import com.lab.opengarage.ui.common.ScrollToTopButton
 import com.lab.opengarage.ui.common.getGoogleIdToken
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -65,6 +68,7 @@ fun ProfileScreen(
     val listState = rememberLazyListState()
     val context = LocalContext.current
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    val scope = rememberCoroutineScope()
     var showWithdraw by remember { mutableStateOf(false) }
     var deleteContent by remember { mutableStateOf(false) }
 
@@ -109,6 +113,17 @@ fun ProfileScreen(
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = { LargeTopAppBar(title = { Text("프로필") }, scrollBehavior = scrollBehavior) },
+        floatingActionButton = {
+            ScrollToTopButton(
+                listState = listState,
+                onClick = {
+                    scope.launch {
+                        listState.animateScrollToItem(0)
+                        scrollBehavior.state.heightOffset = 0f
+                    }
+                },
+            )
+        },
     ) { padding ->
         LazyColumn(
             state = listState,
