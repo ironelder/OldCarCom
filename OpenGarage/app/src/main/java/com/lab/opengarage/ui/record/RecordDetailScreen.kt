@@ -98,6 +98,14 @@ fun RecordDetailScreen(
                     Column(Modifier.padding(16.dp)) {
                         val tag = if (r.type == RecordType.FUEL) "[주유]" else "[정비]"
                         Text("$tag ${r.title}", style = MaterialTheme.typography.titleLarge)
+                        if (r.years.isNotBlank()) {
+                            Text(
+                                "${r.make} · ${r.years}",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.padding(top = 2.dp),
+                            )
+                        }
                         Text(
                             "${r.ownerNickname.ifBlank { "오너" }} · ${"%,d".format(r.mileageKm)}km · ${formatDate(r.date)}",
                             style = MaterialTheme.typography.bodyMedium,

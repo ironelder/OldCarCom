@@ -24,6 +24,7 @@ data class Record(
     val ownerNickname: String = "",
     val make: String = "",
     val modelKey: String = "",
+    val years: String = "", // 연식/세대 표기 (예: "1965", "1세대(1964-1973)")
     val type: RecordType = RecordType.MAINTENANCE,
     val date: Long = 0L,
     val mileageKm: Int = 0,

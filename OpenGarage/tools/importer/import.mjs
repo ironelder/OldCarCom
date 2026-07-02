@@ -91,6 +91,7 @@ async function main() {
       ownerNickname: p.author ?? "비회원",
       make: String(p.make).trim(),
       modelKey: makeModelKey(p.make, p.model),
+      years: p.years ?? "",
       type: "MAINTENANCE",
       date: parseDateMs(p.date),
       mileageKm: Number(p.mileageKm) || 0,

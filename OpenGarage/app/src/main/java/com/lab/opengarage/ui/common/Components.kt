@@ -137,8 +137,9 @@ fun RecordCard(record: Record, onClick: () -> Unit) {
                         overflow = TextOverflow.Ellipsis,
                     )
                 }
+                val yearsPrefix = if (record.years.isNotBlank()) "${record.years} · " else ""
                 Text(
-                    "${record.ownerNickname.ifBlank { "오너" }} · ${"%,d".format(record.mileageKm)}km · ${formatDate(record.date)}",
+                    "$yearsPrefix${record.ownerNickname.ifBlank { "오너" }} · ${"%,d".format(record.mileageKm)}km · ${formatDate(record.date)}",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(top = 4.dp),
