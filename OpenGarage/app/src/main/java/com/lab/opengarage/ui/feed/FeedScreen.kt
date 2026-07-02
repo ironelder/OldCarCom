@@ -18,7 +18,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
+import androidx.compose.material3.pulltorefresh.pullToRefresh
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -52,6 +54,7 @@ fun FeedScreen(
     val listState = rememberLazyListState()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val scope = rememberCoroutineScope()
+    val refreshState = rememberPullToRefreshState()
 
     InfiniteScrollEffect(listState) { vm.loadMore() }
 
@@ -98,12 +101,18 @@ fun FeedScreen(
             )
         },
     ) { padding ->
-        PullToRefreshBox(
-            isRefreshing = refreshing,
-            onRefresh = { vm.refresh() },
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding),
+                .padding(padding)
+                .pullToRefresh(
+                    isRefreshing = refreshing,
+                    state = refreshState,
+                    // 헤더가 완전히 펼쳐진 최상단에서만 새로고침 활성화 →
+                    // 접힌 상태에서 아래로 당기면 헤더(검색창)부터 펼쳐짐
+                    enabled = scrollBehavior.state.collapsedFraction == 0f,
+                    onRefresh = { vm.refresh() },
+                ),
         ) {
             LazyColumn(state = listState, modifier = Modifier.fillMaxSize()) {
                 when {
@@ -129,6 +138,11 @@ fun FeedScreen(
                     }
                 }
             }
+            PullToRefreshDefaults.Indicator(
+                state = refreshState,
+                isRefreshing = refreshing,
+                modifier = Modifier.align(Alignment.TopCenter),
+            )
         }
     }
 }
