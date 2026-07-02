@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 240" font-family="sans-serif">
+<rect width="460" height="240" fill="#FAF7EC"/>
+<text x="230" y="32" text-anchor="middle" font-size="21" font-weight="bold" fill="#10532F">디젤 예열 계통 (글로우 플러그)</text>
+<rect x="60" y="150" width="340" height="26" rx="4" fill="#EAF3EC" stroke="#10532F" stroke-width="2"/>
+<text x="230" y="168" text-anchor="middle" font-size="11" fill="#5A6B5A">버스바 / 배선</text>
+<g fill="#C8961E">
+<rect x="90" y="110" width="12" height="40"/><rect x="170" y="110" width="12" height="40"/><rect x="250" y="110" width="12" height="40"/><rect x="330" y="110" width="12" height="40"/></g>
+<g font-size="11" fill="#20301F" text-anchor="middle"><text x="96" y="104">1</text><text x="176" y="104">2</text><text x="256" y="104">3</text><text x="336" y="104">4</text></g>
+<rect x="60" y="70" width="90" height="30" rx="4" fill="#EAF3EC" stroke="#10532F" stroke-width="2"/>
+<text x="105" y="90" text-anchor="middle" font-size="11" fill="#20301F">예열 릴레이</text>
+<text x="230" y="210" text-anchor="middle" font-size="12" fill="#5A6B5A">점검: 각 플러그 저항(단선) · 릴레이 작동 · 예열 표시등 · 배터리 전압</text>
+</svg>

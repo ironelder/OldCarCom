@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 240" font-family="sans-serif">
+<rect width="480" height="240" fill="#FAF7EC"/>
+<text x="240" y="32" text-anchor="middle" font-size="21" font-weight="bold" fill="#10532F">연료 계통 흐름 (개념도)</text>
+<defs><marker id="fa" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#C8961E"/></marker></defs>
+<g stroke="#10532F" stroke-width="2" fill="#EAF3EC">
+<rect x="20" y="90" width="80" height="50" rx="6"/><rect x="130" y="90" width="80" height="50" rx="6"/>
+<rect x="240" y="90" width="80" height="50" rx="6"/><rect x="360" y="90" width="90" height="50" rx="6"/></g>
+<g font-size="12" fill="#20301F" text-anchor="middle">
+<text x="60" y="118">연료탱크</text><text x="170" y="112">연료펌프</text><text x="280" y="112">연료필터</text><text x="405" y="112">인젝터/레일</text>
+<text x="170" y="128" font-size="10" fill="#5A6B5A">(압력)</text><text x="405" y="128" font-size="10" fill="#5A6B5A">(분사)</text></g>
+<g stroke="#C8961E" stroke-width="3" marker-end="url(#fa)"><line x1="100" y1="115" x2="128" y2="115"/><line x1="210" y1="115" x2="238" y2="115"/><line x1="320" y1="115" x2="358" y2="115"/></g>
+<text x="240" y="180" text-anchor="middle" font-size="12" fill="#5A6B5A">점검: 연료압 레귤레이터 · 펌프 압력/소음 · 필터 막힘 · 인젝터 분무</text>
+<text x="240" y="204" text-anchor="middle" font-size="11" fill="#5A6B5A">※ 기계식(K-Jetronic)·전자식(EFI) 사양별 점검 포인트 상이</text>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 240" font-family="sans-serif">
+<rect width="480" height="240" fill="#FAF7EC"/>
+<text x="240" y="32" text-anchor="middle" font-size="21" font-weight="bold" fill="#10532F">부식 점검 포인트 (일반)</text>
+<path d="M60,150 L100,110 L200,100 L250,70 L340,72 L380,105 L430,112 L430,150 Z" fill="#EAF3EC" stroke="#10532F" stroke-width="2"/>
+<circle cx="120" cy="150" r="22" fill="none" stroke="#10532F" stroke-width="2"/><circle cx="360" cy="150" r="22" fill="none" stroke="#10532F" stroke-width="2"/>
+<g fill="#C8961E"><circle cx="90" cy="145" r="6"/><circle cx="245" cy="150" r="6"/><circle cx="410" cy="140" r="6"/><circle cx="250" cy="95" r="6"/></g>
+<g font-size="11" fill="#20301F">
+<text x="60" y="185">① 앞펜더/젝킹</text><text x="210" y="182">② 플로어/사이드실</text><text x="380" y="180">③ 트렁크/리어</text><text x="215" y="60">④ 카울/윈드실드하부</text></g>
+<text x="240" y="220" text-anchor="middle" font-size="11" fill="#5A6B5A">배수구 막힘·실링 점검 · 표면녹 제거+방청 · 관통부식 판금 · 하부 방청도포</text>
+</svg>

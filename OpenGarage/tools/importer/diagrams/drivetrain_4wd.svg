@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 260" font-family="sans-serif">
+<rect width="480" height="260" fill="#FAF7EC"/>
+<text x="240" y="32" text-anchor="middle" font-size="21" font-weight="bold" fill="#10532F">4WD 구동 계통 (개념도)</text>
+<g stroke="#10532F" stroke-width="2" fill="#EAF3EC">
+<rect x="200" y="60" width="80" height="40" rx="6"/><rect x="205" y="120" width="70" height="40" rx="6"/>
+<circle cx="240" cy="205" r="26"/><circle cx="240" cy="205" r="26"/></g>
+<circle cx="90" cy="205" r="24" fill="#EAF3EC" stroke="#10532F" stroke-width="2"/>
+<circle cx="390" cy="205" r="24" fill="#EAF3EC" stroke="#10532F" stroke-width="2"/>
+<g font-size="11" fill="#20301F" text-anchor="middle">
+<text x="240" y="84">변속기</text><text x="240" y="144">트랜스퍼</text>
+<text x="240" y="209">중앙</text><text x="90" y="209">앞 디퍼</text><text x="390" y="209">뒤 디퍼</text></g>
+<g stroke="#C8961E" stroke-width="3"><line x1="240" y1="160" x2="240" y2="179"/><line x1="214" y1="205" x2="116" y2="205"/><line x1="266" y1="205" x2="364" y2="205"/></g>
+<text x="240" y="248" text-anchor="middle" font-size="11" fill="#5A6B5A">점검: 트랜스퍼·전후 디퍼 오일 · 프리휠허브 · 프로펠러샤프트 U조인트 · 액슬시일</text>
+</svg>

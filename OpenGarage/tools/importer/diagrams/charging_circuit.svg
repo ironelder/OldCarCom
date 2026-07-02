@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 240" font-family="sans-serif">
+<rect width="460" height="240" fill="#FAF7EC"/>
+<text x="230" y="32" text-anchor="middle" font-size="21" font-weight="bold" fill="#10532F">충전 계통 (개념도)</text>
+<g stroke="#10532F" stroke-width="2" fill="#EAF3EC">
+<rect x="40" y="90" width="100" height="55" rx="6"/><rect x="190" y="90" width="90" height="55" rx="6"/><rect x="330" y="90" width="90" height="55" rx="6"/></g>
+<g font-size="12" fill="#20301F" text-anchor="middle">
+<text x="90" y="114">알터네이터</text><text x="90" y="132" font-size="10" fill="#5A6B5A">(발전)</text>
+<text x="235" y="114">레귤레이터</text><text x="235" y="132" font-size="10" fill="#5A6B5A">(전압조정)</text>
+<text x="375" y="114">배터리</text><text x="375" y="132" font-size="10" fill="#5A6B5A">(축전)</text></g>
+<line x1="140" y1="117" x2="188" y2="117" stroke="#C8961E" stroke-width="3"/>
+<line x1="280" y1="117" x2="328" y2="117" stroke="#C8961E" stroke-width="3"/>
+<text x="230" y="180" text-anchor="middle" font-size="13" fill="#20301F">충전전압 약 13.8~14.5V 확인</text>
+<text x="230" y="204" text-anchor="middle" font-size="11" fill="#5A6B5A">점검: 벨트 장력 · 접지 스트랩 · 다이오드/레귤레이터 · 배선 부식</text>
+</svg>

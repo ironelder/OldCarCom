@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 240" font-family="sans-serif">
+<rect width="480" height="240" fill="#FAF7EC"/>
+<text x="240" y="32" text-anchor="middle" font-size="21" font-weight="bold" fill="#10532F">자동변속기 점검 (개념도)</text>
+<g stroke="#10532F" stroke-width="2" fill="#EAF3EC">
+<rect x="30" y="90" width="70" height="55" rx="6"/><circle cx="150" cy="117" r="28"/><rect x="200" y="80" width="110" height="75" rx="8"/><rect x="350" y="95" width="110" height="45" rx="6"/></g>
+<g font-size="12" fill="#20301F" text-anchor="middle">
+<text x="65" y="122">엔진</text><text x="150" y="121">토크<tspan x="150" dy="14">컨버터</tspan></text>
+<text x="255" y="112">변속기</text><text x="255" y="130" font-size="10" fill="#5A6B5A">(유압/밸브바디)</text>
+<text x="405" y="114">오일팬</text><text x="405" y="130" font-size="10" fill="#5A6B5A">+필터</text></g>
+<text x="240" y="185" text-anchor="middle" font-size="12" fill="#5A6B5A">오일·필터·팬개스킷 주기 교환 · 규정온도 유량 확인</text>
+<text x="240" y="208" text-anchor="middle" font-size="11" fill="#5A6B5A">증상: 변속충격/미끄러짐/지연 → 오일 열화·유량 점검</text>
+</svg>
