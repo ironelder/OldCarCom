@@ -7,44 +7,68 @@
 
     <!-- 지면 그림자 -->
     <path
-        android:fillColor="#26000000"
-        android:pathData="M28,74 a26,3 0 1,0 52,0 a26,3 0 1,0 -52,0 Z" />
+        android:fillColor="#22000000"
+        android:pathData="M34,79 a20,2.5 0 1,0 40,0 a20,2.5 0 1,0 -40,0 Z" />
 
-    <!-- 클래식 쿠페 (adaptive 안전영역 내로 축소) -->
-    <group
-        android:scaleX="0.87"
-        android:scaleY="0.87"
-        android:pivotX="54"
-        android:pivotY="54">
+    <!-- 타이어 -->
+    <path
+        android:fillColor="#FF16241B"
+        android:pathData="M31,70 L42,70 L42,73.5 Q42,76.5 39,76.5 L34,76.5 Q31,76.5 31,73.5 Z" />
+    <path
+        android:fillColor="#FF16241B"
+        android:pathData="M66,70 L77,70 L77,73.5 Q77,76.5 74,76.5 L69,76.5 Q66,76.5 66,73.5 Z" />
 
-        <!-- 차체: 롱 후드 + 스웨핑 펜더 + 러닝보드 -->
-        <path
-            android:fillColor="#FFF6EC"
-            android:pathData="M16,66 L15,57 C15,53 17,50 21,49 C25,47 29,45 33,44 C35,35 40,30 47,30 L57,30 C61,30 64,32 66,36 L68.5,42 C73,42.5 79,43.5 83,45 C88,47 91,50 92,54 L93,59 L93,66 L84,66 A12,12 0 0 0 60,66 L46,66 A12,12 0 0 0 22,66 Z" />
+    <!-- 캐빈(지붕) -->
+    <path
+        android:fillColor="#FFF6EC"
+        android:pathData="M36,44 L36,34 Q36,27 43,27 L65,27 Q72,27 72,34 L72,44 Z" />
 
-        <!-- 창문 (필러 분할) -->
-        <path
-            android:fillColor="#FF156038"
-            android:pathData="M39,42 C40.5,35.5 44,32.5 48.5,32.5 L51.5,32.5 L51.5,42 Z" />
-        <path
-            android:fillColor="#FF156038"
-            android:pathData="M55,32.5 L57,32.5 C60.5,32.5 62.7,34.3 64.3,37.5 L66,42 L55,42 Z" />
+    <!-- 앞유리 (딥 그린 인셋) -->
+    <path
+        android:fillColor="#FF0A4226"
+        android:pathData="M40,41 L40,34 Q40,31 43,31 L65,31 Q68,31 68,34 L68,41 Z" />
 
-        <!-- 헤드라이트 (앰버) -->
-        <path
-            android:fillColor="#FFF6C453"
-            android:pathData="M87.5,50 m-2.2,0 a2.2,2.2 0 1,0 4.4,0 a2.2,2.2 0 1,0 -4.4,0 Z" />
+    <!-- 차체 + 좌우 펜더 돔 -->
+    <path
+        android:fillColor="#FFF6EC"
+        android:pathData="M29,67 L29,47 Q29,38 38,38 L70,38 Q79,38 79,47 L79,67 Z" />
+    <path
+        android:fillColor="#FFF6EC"
+        android:pathData="M34,54 m-11,0 a11,11 0 1,0 22,0 a11,11 0 1,0 -22,0 Z" />
+    <path
+        android:fillColor="#FFF6EC"
+        android:pathData="M74,54 m-11,0 a11,11 0 1,0 22,0 a11,11 0 1,0 -22,0 Z" />
 
-        <!-- 뒷바퀴: 타이어 / 화이트월 / 허브 / 센터캡 -->
-        <path android:fillColor="#FF2C150E" android:pathData="M34,64 m-10,0 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0 Z" />
-        <path android:fillColor="#FFF6EC" android:pathData="M34,64 m-6.8,0 a6.8,6.8 0 1,0 13.6,0 a6.8,6.8 0 1,0 -13.6,0 Z" />
-        <path android:fillColor="#FF2C150E" android:pathData="M34,64 m-3.6,0 a3.6,3.6 0 1,0 7.2,0 a3.6,3.6 0 1,0 -7.2,0 Z" />
-        <path android:fillColor="#FFF6EC" android:pathData="M34,64 m-1.2,0 a1.2,1.2 0 1,0 2.4,0 a1.2,1.2 0 1,0 -2.4,0 Z" />
+    <!-- 보닛 배지 (골드) -->
+    <path
+        android:fillColor="#FFF6C453"
+        android:pathData="M54,42.5 m-1.7,0 a1.7,1.7 0 1,0 3.4,0 a1.7,1.7 0 1,0 -3.4,0 Z" />
 
-        <!-- 앞바퀴 -->
-        <path android:fillColor="#FF2C150E" android:pathData="M72,64 m-10,0 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0 Z" />
-        <path android:fillColor="#FFF6EC" android:pathData="M72,64 m-6.8,0 a6.8,6.8 0 1,0 13.6,0 a6.8,6.8 0 1,0 -13.6,0 Z" />
-        <path android:fillColor="#FF2C150E" android:pathData="M72,64 m-3.6,0 a3.6,3.6 0 1,0 7.2,0 a3.6,3.6 0 1,0 -7.2,0 Z" />
-        <path android:fillColor="#FFF6EC" android:pathData="M72,64 m-1.2,0 a1.2,1.2 0 1,0 2.4,0 a1.2,1.2 0 1,0 -2.4,0 Z" />
-    </group>
+    <!-- 라디에이터 그릴 (세로 오벌 + 크림 슬랫) -->
+    <path
+        android:fillColor="#FF0A4226"
+        android:pathData="M46,54.5 L46,54 Q46,46 54,46 Q62,46 62,54 L62,55 Q62,63 54,63 Q46,63 46,54.5 Z" />
+    <path
+        android:fillColor="#FFF6EC"
+        android:pathData="M48.5,49.5 L59.5,49.5 L59.5,51.1 L48.5,51.1 Z" />
+    <path
+        android:fillColor="#FFF6EC"
+        android:pathData="M48.5,53.2 L59.5,53.2 L59.5,54.8 L48.5,54.8 Z" />
+    <path
+        android:fillColor="#FFF6EC"
+        android:pathData="M48.5,56.9 L59.5,56.9 L59.5,58.5 L48.5,58.5 Z" />
+
+    <!-- 헤드라이트: 그린 림 + 골드 렌즈 + 글린트 -->
+    <path android:fillColor="#FF0A4226" android:pathData="M34,54 m-8,0 a8,8 0 1,0 16,0 a8,8 0 1,0 -16,0 Z" />
+    <path android:fillColor="#FFF6C453" android:pathData="M34,54 m-6.3,0 a6.3,6.3 0 1,0 12.6,0 a6.3,6.3 0 1,0 -12.6,0 Z" />
+    <path android:fillColor="#FFFDF4DC" android:pathData="M31.8,51.8 m-1.8,0 a1.8,1.8 0 1,0 3.6,0 a1.8,1.8 0 1,0 -3.6,0 Z" />
+
+    <path android:fillColor="#FF0A4226" android:pathData="M74,54 m-8,0 a8,8 0 1,0 16,0 a8,8 0 1,0 -16,0 Z" />
+    <path android:fillColor="#FFF6C453" android:pathData="M74,54 m-6.3,0 a6.3,6.3 0 1,0 12.6,0 a6.3,6.3 0 1,0 -12.6,0 Z" />
+    <path android:fillColor="#FFFDF4DC" android:pathData="M71.8,51.8 m-1.8,0 a1.8,1.8 0 1,0 3.6,0 a1.8,1.8 0 1,0 -3.6,0 Z" />
+
+    <!-- 크롬 범퍼 (골드 바) -->
+    <path
+        android:fillColor="#FFF6C453"
+        android:pathData="M27,66 L81,66 Q83,66 83,68.2 Q83,70.5 81,70.5 L27,70.5 Q25,70.5 25,68.2 Q25,66 27,66 Z" />
 </vector>
