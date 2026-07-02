@@ -75,7 +75,7 @@
     "make": "Ford", "model": "Mustang", "author": "오픈개러지 가이드",
     "title": "클래식 머스탱 카뷰레터(오토라이트/홀리) 세팅",
     "description": "카뷰레터는 초크(오토/매뉴얼) 작동, 아이들 믹스처·스피드 스크류, 액셀러레이터 펌프 샷 점검이 기본. 플로트 유면·니들&시트 누유 확인, 장기보관 후 바니시 고착은 분해 세척. 연료펌프(기계식) 압력·연료라인 노후·베이퍼락 점검. 진공라인 누기는 공회전 불안정의 흔한 원인.",
-    "date": "2022-06-20", "mileageKm": 99000, "cost": 180000, "photos": []
+    "date": "2022-06-20", "mileageKm": 99000, "cost": 180000, "photos": ["diagrams/carburetor_adjust.svg"]
   },
   {
     "make": "Ford", "model": "Mustang", "author": "오픈개러지 가이드",
@@ -147,7 +147,7 @@
     "make": "Mercedes-Benz", "model": "W124", "author": "오픈개러지 가이드",
     "title": "W124 M104 헤드개스킷·타이밍·누유 점검",
     "description": "직렬6 M104는 헤드개스킷(오일·냉각수 혼입) 이력 점검과 타이밍체인·텐셔너·가이드 관리가 중요. 밸브커버·타이밍커버 누유, 오일필터하우징 누유 흔함. 냉각(워터펌프·서모스탯·라디에이터), 연료(KE/HFM) 사양별 점검. 모노밸브(히터) 누수 확인.",
-    "date": "2022-02-19", "mileageKm": 198000, "cost": 320000, "photos": []
+    "date": "2022-02-19", "mileageKm": 198000, "cost": 320000, "photos": ["diagrams/head_torque_sequence.svg"]
   },
   {
     "make": "Mercedes-Benz", "model": "W126", "author": "오픈개러지 가이드",

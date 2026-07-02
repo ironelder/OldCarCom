@@ -23,6 +23,14 @@ class Paginator<T>(
     private var cursor: Any? = null
     private var inFlight = false
 
+    /** 미리 받아둔 첫 페이지로 즉시 초기화(프리페치 재사용). */
+    fun seed(page: Page<T>) {
+        cursor = page.cursor
+        items.value = page.items
+        endReached.value = page.endReached
+        initialized.value = true
+    }
+
     /**
      * 첫 페이지를 다시 불러와 교체(soft). 기존 items 를 비우지 않아 화면 깜빡임이 없다.
      */

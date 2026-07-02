@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 280" font-family="sans-serif">
+  <rect width="460" height="280" fill="#FAF7EC"/>
+  <text x="230" y="34" text-anchor="middle" font-size="22" font-weight="bold" fill="#10532F">헤드볼트 조임 순서 (중앙→바깥)</text>
+
+  <!-- 헤드 윤곽 -->
+  <rect x="60" y="70" width="340" height="130" rx="14" fill="#EAF3EC" stroke="#10532F" stroke-width="2"/>
+
+  <!-- 볼트 위치 (2열 x 5) + 중앙에서 바깥 나선 번호 -->
+  <g fill="#10532F">
+    <circle cx="110" cy="105" r="16"/><circle cx="180" cy="105" r="16"/><circle cx="250" cy="105" r="16"/><circle cx="320" cy="105" r="16"/><circle cx="360" cy="105" r="16"/>
+    <circle cx="110" cy="165" r="16"/><circle cx="180" cy="165" r="16"/><circle cx="250" cy="165" r="16"/><circle cx="320" cy="165" r="16"/><circle cx="360" cy="165" r="16"/>
+  </g>
+  <!-- 조임 순번(중앙 250에서 시작해 바깥으로) -->
+  <g fill="#FAF7EC" font-size="15" font-weight="bold" text-anchor="middle">
+    <text x="250" y="110">1</text><text x="250" y="170">2</text>
+    <text x="180" y="110">3</text><text x="180" y="170">4</text>
+    <text x="320" y="110">5</text><text x="320" y="170">6</text>
+    <text x="110" y="110">7</text><text x="110" y="170">8</text>
+    <text x="360" y="110">9</text><text x="360" y="170">10</text>
+  </g>
+
+  <text x="230" y="238" text-anchor="middle" font-size="12" fill="#5A6B5A">중앙에서 바깥으로 나선형. 규정 토크를 2~3단계 나눠 조임(예: 40% → 70% → 100%)</text>
+  <text x="230" y="258" text-anchor="middle" font-size="11" fill="#5A6B5A">※ 순서·토크값·각도조임(TTY)은 엔진별 정비지침서 확인</text>
+</svg>

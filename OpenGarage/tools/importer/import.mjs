@@ -20,7 +20,7 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const DRY = process.argv.includes("--dry");
 
 // ── 설정 ─────────────────────────────────────────────
-const ARCHIVE_UID = "REPLACE_WITH_ARCHIVE_ACCOUNT_UID"; // 아카이브 계정 uid
+const ARCHIVE_UID = "qJmvCaSr8PTZH9i4HJ0uACcEGjI3"; // 아카이브 계정 uid
 const STORAGE_BUCKET = "opengarage-5154b.firebasestorage.app";
 // ────────────────────────────────────────────────────
 

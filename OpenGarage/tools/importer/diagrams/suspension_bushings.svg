@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 300" font-family="sans-serif">
+  <rect width="460" height="300" fill="#FAF7EC"/>
+  <text x="230" y="34" text-anchor="middle" font-size="22" font-weight="bold" fill="#10532F">프론트 현가 부싱 점검 위치</text>
+
+  <!-- 로어 컨트롤암(A암) -->
+  <path d="M70,210 L300,150 L300,180 L90,235 Z" fill="#EAF3EC" stroke="#10532F" stroke-width="2"/>
+  <text x="150" y="205" font-size="12" fill="#5A6B5A">로어 컨트롤암</text>
+
+  <!-- 내측 부싱 2개 -->
+  <circle cx="300" cy="150" r="12" fill="none" stroke="#C8961E" stroke-width="4"/>
+  <circle cx="300" cy="180" r="12" fill="none" stroke="#C8961E" stroke-width="4"/>
+  <text x="322" y="150" font-size="12" fill="#20301F">① 컨트롤암 부싱(내측)</text>
+  <text x="322" y="188" font-size="12" fill="#20301F">② 컨트롤암 부싱(내측)</text>
+
+  <!-- 볼조인트 (외측 끝) -->
+  <circle cx="78" cy="222" r="10" fill="#10532F"/>
+  <text x="30" y="255" font-size="12" fill="#20301F">③ 볼조인트</text>
+
+  <!-- 스태빌라이저 링크 -->
+  <line x1="200" y1="120" x2="210" y2="180" stroke="#10532F" stroke-width="5"/>
+  <circle cx="200" cy="120" r="7" fill="none" stroke="#C8961E" stroke-width="3"/>
+  <text x="150" y="110" font-size="12" fill="#20301F">④ 스태빌라이저 링크·부싱</text>
+
+  <text x="230" y="286" text-anchor="middle" font-size="12" fill="#5A6B5A">유격·균열·소음(요철 통통) 점검. 부싱/볼조인트 교체 후 휠얼라인먼트 필수</text>
+</svg>

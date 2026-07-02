@@ -2,6 +2,7 @@ package com.lab.opengarage.ui.feed
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lab.opengarage.data.FeedCache
 import com.lab.opengarage.data.RecordRepository
 import com.lab.opengarage.model.Car
 import com.lab.opengarage.ui.common.Paginator
@@ -13,6 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FeedViewModel @Inject constructor(
     private val repo: RecordRepository,
+    private val feedCache: FeedCache,
 ) : ViewModel() {
 
     // 입력값(탭 이동 후에도 ViewModel 이 살아있어 유지됨)
@@ -25,8 +27,14 @@ class FeedViewModel @Inject constructor(
     val paginator = Paginator { cursor, limit -> repo.feedPage(curMake, curModelKey, cursor, limit) }
 
     init {
-        // 최초 진입: 필터 없이 전체 공개 피드
-        viewModelScope.launch { paginator.refresh() }
+        // 프리페치된 첫 페이지가 있으면 즉시 표시(스플래시 중 로딩됨), 없으면 새로 로드
+        val cached = feedCache.firstPage
+        if (cached != null) {
+            paginator.seed(cached)
+            feedCache.firstPage = null // 1회성 사용(다음 새로고침은 서버에서)
+        } else {
+            viewModelScope.launch { paginator.refresh() }
+        }
     }
 
     fun setMake(value: String) { make.value = value }
