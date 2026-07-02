@@ -1,10 +1,13 @@
 package com.lab.opengarage.ui
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.Home
@@ -21,8 +24,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import com.lab.opengarage.R
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -60,13 +66,33 @@ fun AppRoot(rootVm: RootViewModel = hiltViewModel()) {
     }
 }
 
+// 시스템 스플래시(Theme.OpenGarage.Starting)와 같은 배경·엠블럼으로 이어지는 브랜드 스플래시
+private val SplashBackground = Color(0xFF7A2A12)
+private val SplashCream = Color(0xFFFFF6EC)
+
 @Composable
 private fun SplashScreen() {
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    Box(
+        Modifier
+            .fillMaxSize()
+            .background(SplashBackground),
+        contentAlignment = Alignment.Center,
+    ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text("오픈개러지", style = MaterialTheme.typography.headlineMedium)
-            Spacer(Modifier.height(16.dp))
-            CircularProgressIndicator()
+            Image(
+                painter = painterResource(R.drawable.ic_splash_logo),
+                contentDescription = null,
+                modifier = Modifier.size(180.dp),
+            )
+            Text("오픈개러지", style = MaterialTheme.typography.headlineMedium, color = SplashCream)
+            Spacer(Modifier.height(4.dp))
+            Text(
+                "클래식카 정비노트",
+                style = MaterialTheme.typography.bodyMedium,
+                color = SplashCream.copy(alpha = 0.7f),
+            )
+            Spacer(Modifier.height(24.dp))
+            CircularProgressIndicator(color = SplashCream)
         }
     }
 }
