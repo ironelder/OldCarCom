@@ -3,7 +3,7 @@
     "make": "BMW", "model": "E30", "author": "오픈개러지 가이드",
     "title": "E30 M10/M20 밸브·타이밍 방식별 관리",
     "description": "E30은 엔진별 관리가 다름. M10(4기통 SOHC)은 타이밍체인+기계식 태핏이라 밸브간극 조정이 필요. M20(직렬6 SOHC)은 타이밍벨트 방식으로 6만km 주기 교체 필수(간섭형 → 초과 금지)이며 워터펌프·텐셔너·롤러 세트 교환 권장. M40은 초기형 타이밍 관련 이슈로 상태 점검이 중요. 교체 시 캠·크랭크 타이밍마크 정렬과 장력 규격을 꼭 맞추세요.",
-    "date": "2022-05-20", "mileageKm": 160000, "cost": 300000, "photos": []
+    "date": "2022-05-20", "mileageKm": 160000, "cost": 300000, "photos": ["diagrams/timing_marks.svg"]
   },
   {
     "make": "BMW", "model": "E30", "author": "오픈개러지 가이드",
@@ -27,7 +27,7 @@
     "make": "BMW", "model": "E28", "author": "오픈개러지 가이드",
     "title": "E28 5시리즈 M30 직렬6 타이밍체인·밸브 점검",
     "description": "M30 빅식스는 타이밍체인 방식으로 체인·가이드레일(플라스틱) 노후 점검이 중요. 유압태핏 사양 확인, 냉간 타핑음은 오일압·태핏 점검. 냉각계통(워터펌프·서모스탯·라디에이터) 예방정비, 연료(제트로닉) 점검. 셀프레벨링(투어링/일부) 사양은 유압펌프·구체 어큐뮬레이터 점검.",
-    "date": "2022-03-12", "mileageKm": 210000, "cost": 320000, "photos": []
+    "date": "2022-03-12", "mileageKm": 210000, "cost": 320000, "photos": ["diagrams/firing_order_i6.svg"]
   },
   {
     "make": "BMW", "model": "E36", "author": "오픈개러지 가이드",
@@ -39,13 +39,13 @@
     "make": "BMW", "model": "E36", "author": "오픈개러지 가이드",
     "title": "E36 M50/M52 바노스·쿨링·누유 종합",
     "description": "M50TU/M52는 싱글 바노스(가변캠) 실 노후 시 저속 토크저하·래틀 → 바노스 리빌드. 쿨링은 플라스틱 워터펌프 임펠러·서모스탯 하우징·라디에이터 노후를 예방적으로 세트 교환. 오일필터하우징 개스킷·밸브커버 개스킷 누유 흔함. 팬클러치·보조전동팬 작동 점검.",
-    "date": "2021-11-14", "mileageKm": 162000, "cost": 350000, "photos": []
+    "date": "2021-11-14", "mileageKm": 162000, "cost": 350000, "photos": ["diagrams/cooling_flow.svg"]
   },
   {
     "make": "BMW", "model": "2002", "author": "오픈개러지 가이드",
     "title": "BMW 2002 M10 밸브간극·점화 타이밍 조정",
     "description": "클래식 02(M10)는 기계식이라 밸브간극(냉간 규격) 주기 조정이 성능·소음의 기본. 점화는 배전기 포인트/전자식 사양 확인 후 드웰·타이밍 조정. 카뷰레터(솔렉스/베버) 또는 D-Jetronic(tii) 사양별 점검. 냉각·연료라인 노후 교체, 프론트 쇽타워·리어 서브프레임 부식 점검.",
-    "date": "2022-04-27", "mileageKm": 130000, "cost": 220000, "photos": []
+    "date": "2022-04-27", "mileageKm": 130000, "cost": 220000, "photos": ["diagrams/valve_clearance.svg"]
   },
   {
     "make": "BMW", "model": "E24", "author": "오픈개러지 가이드",
@@ -69,7 +69,7 @@
     "make": "Ford", "model": "Mustang", "author": "오픈개러지 가이드",
     "title": "클래식 머스탱 V8(289/302) 점화·드웰·타이밍",
     "description": "스몰블록 V8은 배전기 점화. 포인트식은 드웰각·포인트갭 조정, 전자식(듀라스파크/펌프킨) 개조 시 신뢰성↑. 점화순서 1-5-4-2-6-3-7-8 준수(케이블 배열 주의). 타이밍 라이트로 초기 진각+진공/원심 진각 확인. 플러그 열가·갭 규격, 코일·콘덴서 점검.",
-    "date": "2022-05-28", "mileageKm": 98000, "cost": 250000, "photos": []
+    "date": "2022-05-28", "mileageKm": 98000, "cost": 250000, "photos": ["diagrams/firing_order_v8.svg"]
   },
   {
     "make": "Ford", "model": "Mustang", "author": "오픈개러지 가이드",
@@ -87,13 +87,13 @@
     "make": "Ford", "model": "Mustang", "author": "오픈개러지 가이드",
     "title": "클래식 머스탱 브레이크(드럼→디스크) 및 유압계통",
     "description": "구형은 전후 드럼이 많아 제동력·페이드에 불리 → 프론트 디스크 전환 키트가 대중적. 드럼식은 슈·휠실린더 누유·자동조정기 점검. 마스터실린더(싱글→듀얼 안전 개조 권장), 브레이크액 2년 주기 교환·블리딩. 하드라인·소프트호스 노후 교체로 안전 확보.",
-    "date": "2022-08-02", "mileageKm": 96000, "cost": 300000, "photos": []
+    "date": "2022-08-02", "mileageKm": 96000, "cost": 300000, "photos": ["diagrams/brake_bleed_order.svg"]
   },
   {
     "make": "Ford", "model": "Mustang", "author": "오픈개러지 가이드",
     "title": "클래식 머스탱 냉각계통·오버히트 대책",
     "description": "V8 스왑/고온 환경에서 오버히트 잦음. 라디에이터 용량(3~4열 또는 알루미늄), 워터펌프·서모스탯(적정 개도), 팬(클러치팬 또는 전동팬)+셔라우드 조합이 냉각효율 좌우. 타이밍 과지연도 발열 원인. 냉각수 농도·에어빼기, 히터코어·호스 누수 점검.",
-    "date": "2022-08-25", "mileageKm": 98500, "cost": 220000, "photos": []
+    "date": "2022-08-25", "mileageKm": 98500, "cost": 220000, "photos": ["diagrams/cooling_flow.svg"]
   },
   {
     "make": "Ford", "model": "Mustang", "author": "오픈개러지 가이드",
@@ -123,7 +123,7 @@
     "make": "Mercedes-Benz", "model": "W123", "author": "오픈개러지 가이드",
     "title": "W123 가솔린(M110/M102) 타이밍체인·텐셔너 점검",
     "description": "W123 가솔린은 타이밍체인 방식으로 체인 늘어짐·텐셔너·가이드레일 노후 점검이 핵심(체인 점프 시 밸브 손상). 유압 텐셔너 상태와 체인 스트레치(캠타이밍 지각) 확인. 밸브간극(기계식) 조정, 점화(배전기)·연료(K-Jetronic) 점검. 냉각계통 예방정비 병행.",
-    "date": "2022-03-05", "mileageKm": 240000, "cost": 280000, "photos": []
+    "date": "2022-03-05", "mileageKm": 240000, "cost": 280000, "photos": ["diagrams/timing_marks.svg"]
   },
   {
     "make": "Mercedes-Benz", "model": "W123", "author": "오픈개러지 가이드",
@@ -171,6 +171,6 @@
     "make": "Mercedes-Benz", "model": "W123", "author": "오픈개러지 가이드",
     "title": "W123 디젤 OM617 터보/자연흡기 연료·예열",
     "description": "OM617 디젤은 내구성의 상징. 밸브간극 조정, 연료필터(1·2차)·인젝터 분사압/분무 점검, 인젝션펌프 누유 확인. 예열플러그 개별 점검·릴레이 확인으로 겨울 시동성 확보. 터보 사양은 부스트 누기·터보 샤프트 유격·오일리턴 점검. 정지솔레노이드(진공) 작동 확인.",
-    "date": "2022-08-30", "mileageKm": 330000, "cost": 220000, "photos": []
+    "date": "2022-08-30", "mileageKm": 330000, "cost": 220000, "photos": ["diagrams/valve_clearance.svg"]
   }
 ]

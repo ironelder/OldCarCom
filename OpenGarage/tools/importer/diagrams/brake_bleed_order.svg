@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 320" font-family="sans-serif">
+  <rect width="420" height="320" fill="#FAF7EC"/>
+  <text x="210" y="34" text-anchor="middle" font-size="22" font-weight="bold" fill="#10532F">브레이크 블리딩 순서</text>
+  <text x="210" y="56" text-anchor="middle" font-size="13" fill="#5A6B5A">마스터실린더에서 먼 바퀴부터 (대각선 방식 예)</text>
+
+  <!-- 차체 (위에서 본 그림) -->
+  <rect x="140" y="80" width="140" height="200" rx="24" fill="#EAF3EC" stroke="#10532F" stroke-width="2"/>
+  <text x="210" y="110" text-anchor="middle" font-size="13" fill="#5A6B5A">▲ 앞</text>
+  <text x="210" y="264" text-anchor="middle" font-size="13" fill="#5A6B5A">뒤 ▼</text>
+
+  <!-- 바퀴 4개 + 순번 -->
+  <g fill="#10532F">
+    <rect x="96" y="96" width="30" height="52" rx="6"/>   <!-- FL -->
+    <rect x="294" y="96" width="30" height="52" rx="6"/>  <!-- FR -->
+    <rect x="96" y="212" width="30" height="52" rx="6"/>  <!-- RL -->
+    <rect x="294" y="212" width="30" height="52" rx="6"/> <!-- RR -->
+  </g>
+  <g fill="#C8961E" text-anchor="middle" font-size="20" font-weight="bold">
+    <text x="309" y="248">1</text>  <!-- RR -->
+    <text x="111" y="248">2</text>  <!-- RL -->
+    <text x="309" y="130">3</text>  <!-- FR -->
+    <text x="111" y="130">4</text>  <!-- FL -->
+  </g>
+  <g font-size="11" fill="#20301F" text-anchor="middle">
+    <text x="111" y="90">앞좌(FL)</text><text x="309" y="90">앞우(FR)</text>
+  </g>
+  <g font-size="11" fill="#20301F" text-anchor="middle">
+    <text x="111" y="284">뒤좌(RL)</text><text x="309" y="284">뒤우(RR)</text>
+  </g>
+
+  <text x="210" y="312" text-anchor="middle" font-size="12" fill="#5A6B5A">RR→RL→FR→FL. 차량별 지정 순서 우선(지침서 확인)</text>
+</svg>

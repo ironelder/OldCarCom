@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" font-family="sans-serif">
+  <rect width="480" height="300" fill="#FAF7EC"/>
+  <text x="240" y="34" text-anchor="middle" font-size="22" font-weight="bold" fill="#10532F">V8 점화순서 (포드 스몰블록 예)</text>
+  <text x="240" y="58" text-anchor="middle" font-size="13" fill="#5A6B5A">앞(라디에이터) ← → 뒤(변속기)</text>
+
+  <!-- 우뱅크(조수석) 1~4 -->
+  <text x="40" y="100" font-size="13" fill="#20301F">우(조수석)</text>
+  <g fill="#10532F">
+    <circle cx="150" cy="95" r="18"/><circle cx="210" cy="95" r="18"/><circle cx="270" cy="95" r="18"/><circle cx="330" cy="95" r="18"/>
+  </g>
+  <g fill="#FAF7EC" font-size="16" font-weight="bold" text-anchor="middle">
+    <text x="150" y="101">1</text><text x="210" y="101">2</text><text x="270" y="101">3</text><text x="330" y="101">4</text>
+  </g>
+
+  <!-- 좌뱅크(운전석) 5~8 -->
+  <text x="40" y="160" font-size="13" fill="#20301F">좌(운전석)</text>
+  <g fill="#10532F">
+    <circle cx="150" cy="155" r="18"/><circle cx="210" cy="155" r="18"/><circle cx="270" cy="155" r="18"/><circle cx="330" cy="155" r="18"/>
+  </g>
+  <g fill="#FAF7EC" font-size="16" font-weight="bold" text-anchor="middle">
+    <text x="150" y="161">5</text><text x="210" y="161">6</text><text x="270" y="161">7</text><text x="330" y="161">8</text>
+  </g>
+
+  <line x1="120" y1="125" x2="360" y2="125" stroke="#C8961E" stroke-width="1" stroke-dasharray="4 4"/>
+
+  <!-- 점화순서 -->
+  <text x="240" y="220" text-anchor="middle" font-size="15" fill="#20301F">점화순서</text>
+  <text x="240" y="252" text-anchor="middle" font-size="26" font-weight="bold" fill="#C8961E">1 → 5 → 4 → 2 → 6 → 3 → 7 → 8</text>
+  <text x="240" y="284" text-anchor="middle" font-size="12" fill="#5A6B5A">※ 실린더 번호·순서는 제조사/엔진별로 다름. 정비지침서 확인</text>
+</svg>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 280" font-family="sans-serif">
+  <rect width="460" height="280" fill="#FAF7EC"/>
+  <text x="230" y="34" text-anchor="middle" font-size="22" font-weight="bold" fill="#10532F">밸브 간극 측정 (개념도)</text>
+
+  <!-- 캠 로브 -->
+  <g transform="translate(150,120)">
+    <circle r="40" fill="none" stroke="#10532F" stroke-width="5"/>
+    <path d="M0,-40 Q26,-46 20,-14 L-20,-14 Q-26,-46 0,-40 Z" fill="#10532F"/>
+    <circle r="6" fill="#C8961E"/>
+  </g>
+  <text x="150" y="70" text-anchor="middle" font-size="12" fill="#5A6B5A">캠 로브 (베이스써클이 태핏 향할 때 측정)</text>
+
+  <!-- 태핏/밸브 상단 -->
+  <rect x="118" y="168" width="64" height="18" fill="#10532F"/>
+  <rect x="142" y="186" width="16" height="60" fill="#10532F"/>
+  <text x="150" y="262" text-anchor="middle" font-size="12" fill="#20301F">밸브 스템</text>
+
+  <!-- 필러 게이지 -->
+  <rect x="182" y="171" width="120" height="6" fill="#C8961E"/>
+  <text x="330" y="177" font-size="14" fill="#C8961E" font-weight="bold">필러 게이지</text>
+  <text x="330" y="196" font-size="12" fill="#5A6B5A">규정 간극 삽입 시</text>
+  <text x="330" y="212" font-size="12" fill="#5A6B5A">가벼운 저항(슬라이딩)</text>
+
+  <text x="230" y="272" text-anchor="middle" font-size="11" fill="#5A6B5A">냉간/온간 규격 확인 · 심(shim) 또는 조정나사로 조정</text>
+</svg>

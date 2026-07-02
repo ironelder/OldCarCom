@@ -121,6 +121,7 @@ function contentType(p) {
   const e = extOf(p).toLowerCase();
   if (e === ".png") return "image/png";
   if (e === ".webp") return "image/webp";
+  if (e === ".svg") return "image/svg+xml";
   return "image/jpeg";
 }
 

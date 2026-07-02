@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 260" font-family="sans-serif">
+  <rect width="480" height="260" fill="#FAF7EC"/>
+  <text x="240" y="34" text-anchor="middle" font-size="22" font-weight="bold" fill="#10532F">직렬6 점화순서 (BMW 예)</text>
+  <text x="240" y="58" text-anchor="middle" font-size="13" fill="#5A6B5A">앞(1번) ← → 뒤(6번)</text>
+
+  <g fill="#10532F">
+    <circle cx="90" cy="110" r="20"/><circle cx="150" cy="110" r="20"/><circle cx="210" cy="110" r="20"/>
+    <circle cx="270" cy="110" r="20"/><circle cx="330" cy="110" r="20"/><circle cx="390" cy="110" r="20"/>
+  </g>
+  <g fill="#FAF7EC" font-size="18" font-weight="bold" text-anchor="middle">
+    <text x="90" y="117">1</text><text x="150" y="117">2</text><text x="210" y="117">3</text>
+    <text x="270" y="117">4</text><text x="330" y="117">5</text><text x="390" y="117">6</text>
+  </g>
+
+  <text x="240" y="180" text-anchor="middle" font-size="15" fill="#20301F">점화순서</text>
+  <text x="240" y="212" text-anchor="middle" font-size="26" font-weight="bold" fill="#C8961E">1 → 5 → 3 → 6 → 2 → 4</text>
+  <text x="240" y="244" text-anchor="middle" font-size="12" fill="#5A6B5A">※ M10/M20/M30/M50 계열 공통 예. 엔진별 지침서 확인</text>
+</svg>
