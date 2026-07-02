@@ -1,0 +1,13 @@
+{
+  "name": "opengarage-importer",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "동의받아 확보한 정비/복원 글을 오픈개러지 Firebase(records)에 일괄 등록",
+  "scripts": {
+    "import": "node import.mjs"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.6.0"
+  }
+}

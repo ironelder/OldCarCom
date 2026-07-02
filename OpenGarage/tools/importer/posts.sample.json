@@ -1,0 +1,24 @@
+[
+  {
+    "make": "현대",
+    "model": "포니",
+    "author": "복원왕",
+    "title": "브레이크 마스터 실린더 교체",
+    "description": "부품 수급이 어려워 재생품으로 교체. 블리딩까지 완료. 페달감 정상.",
+    "date": "2019-05-10",
+    "mileageKm": 128000,
+    "cost": 80000,
+    "photos": ["images/pony_1.jpg", "images/pony_2.jpg"]
+  },
+  {
+    "make": "기아",
+    "model": "프라이드",
+    "author": "올디스러버",
+    "title": "타이밍벨트 + 워터펌프 세트 교체",
+    "description": "10년 만에 교체. 텐셔너 같이 교환 권장.",
+    "date": "2021-03-22",
+    "mileageKm": 95000,
+    "cost": 250000,
+    "photos": ["images/pride_1.jpg"]
+  }
+]
