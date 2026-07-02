@@ -4,5 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <!-- 스플래시/아이콘 브랜드 -->
     <color name="brand_splash">#FF043320</color>
-    <color name="ic_launcher_background">#FF156038</color>
+    <color name="ic_launcher_background">#FFFFFBF0</color>
 </resources>
