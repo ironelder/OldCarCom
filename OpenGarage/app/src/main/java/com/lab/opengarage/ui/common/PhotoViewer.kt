@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -28,10 +30,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 
 /**
- * 게시글 사진 가로 페이저. 잘림 없이(Fit) 보여주고, 탭하면 전체화면 뷰어를 연다.
+ * 게시글 사진 가로 페이저. 잘림 없이(Fit) 표시, 로딩 스피너·실패 안내 포함, 탭하면 전체화면.
+ * SVG 도해도 렌더링됨(앱 ImageLoader 에 SvgDecoder 등록).
  */
 @Composable
 fun PhotoPager(urls: List<String>, modifier: Modifier = Modifier) {
@@ -45,12 +48,26 @@ fun PhotoPager(urls: List<String>, modifier: Modifier = Modifier) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(300.dp)
-                .background(Color.Black),
+                .background(MaterialTheme.colorScheme.surfaceVariant),
         ) { page ->
-            AsyncImage(
+            SubcomposeAsyncImage(
                 model = urls[page],
                 contentDescription = null,
                 contentScale = ContentScale.Fit,
+                loading = {
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
+                },
+                error = {
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text(
+                            "이미지를 불러올 수 없어요",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                },
                 modifier = Modifier
                     .fillMaxSize()
                     .clickable { viewerStart = page },
@@ -90,10 +107,20 @@ fun FullscreenPhotoViewer(urls: List<String>, startIndex: Int, onDismiss: () -> 
             HorizontalPager(state = pagerState, modifier = Modifier.fillMaxSize()) { page ->
                 var scale by remember { mutableFloatStateOf(1f) }
                 var offset by remember { mutableStateOf(Offset.Zero) }
-                AsyncImage(
+                SubcomposeAsyncImage(
                     model = urls[page],
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
+                    loading = {
+                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            CircularProgressIndicator(color = Color.White)
+                        }
+                    },
+                    error = {
+                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Text("이미지를 불러올 수 없어요", color = Color.White)
+                        }
+                    },
                     modifier = Modifier
                         .fillMaxSize()
                         .pointerInput(Unit) {
@@ -110,19 +137,14 @@ fun FullscreenPhotoViewer(urls: List<String>, startIndex: Int, onDismiss: () -> 
                         },
                 )
             }
-            TextButton(
-                onClick = onDismiss,
-                modifier = Modifier.align(Alignment.TopEnd).padding(8.dp),
-            ) {
+            TextButton(onClick = onDismiss, modifier = Modifier.align(Alignment.TopEnd).padding(8.dp)) {
                 Text("닫기", color = Color.White)
             }
             if (urls.size > 1) {
                 Text(
                     text = "${pagerState.currentPage + 1} / ${urls.size}",
                     color = Color.White,
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(24.dp),
+                    modifier = Modifier.align(Alignment.BottomCenter).padding(24.dp),
                 )
             }
         }

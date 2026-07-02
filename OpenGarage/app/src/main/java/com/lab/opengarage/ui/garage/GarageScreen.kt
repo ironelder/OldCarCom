@@ -57,8 +57,8 @@ fun GarageScreen(
     ) { padding ->
         Box(Modifier.fillMaxSize().padding(padding)) {
             when {
-                !initialized && loading -> CircularProgressIndicator(Modifier.align(Alignment.Center))
-                initialized && cars.isEmpty() -> Text(
+                !initialized -> CircularProgressIndicator(Modifier.align(Alignment.Center))
+                cars.isEmpty() -> Text(
                     "아직 등록한 차가 없어요.\n+ 로 첫 차를 추가하세요.",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,

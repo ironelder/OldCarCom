@@ -75,8 +75,8 @@ fun FeedScreen(
 
             Box(Modifier.fillMaxSize()) {
                 when {
-                    !initialized && loading -> CircularProgressIndicator(Modifier.align(Alignment.Center))
-                    initialized && records.isEmpty() -> Text(
+                    !initialized -> CircularProgressIndicator(Modifier.align(Alignment.Center))
+                    records.isEmpty() -> Text(
                         "기록이 없습니다.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
