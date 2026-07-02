@@ -46,13 +46,15 @@ npm run import -- --dry   # 미리보기
 npm run import            # 등록
 ```
 
-전체 시드(기본 12건 + 확장 30건 = 42건, 국산·수입 클래식 17개 브랜드)를 한 번에 넣으려면:
+전체 시드(12 + 30 + 29 = **71건**)를 한 번에 넣으려면:
 
 ```bash
-node -e "const fs=require('fs');const a=require('./posts.seed.json');const b=require('./posts.seed2.json');fs.writeFileSync('posts.json',JSON.stringify([...a,...b],null,2))"
+node -e "const fs=require('fs');const j=n=>require('./'+n);const all=[...j('posts.seed.json'),...j('posts.seed2.json'),...j('posts.seed3.json')];fs.writeFileSync('posts.json',JSON.stringify(all,null,2))"
 npm run import -- --dry
 npm run import
 ```
+
+`posts.seed3.json` = BMW·포드 머스탱·벤츠 집중 상세 29건 (BMW E30/E28/E36/2002/E24/E34 냉각·타이밍·서브프레임·디퍼렌셜·연료 / 클래식·폭스바디 머스탱 부식·점화·카뷰레터·현가·브레이크·9인치액슬·C4 / 벤츠 W123·W124·W126·W201·R107 타이밍체인·진공계통·엔진하네스·디젤).
 
 `posts.seed2.json` 커버: 현대(쏘나타/엑셀/티뷰론/갤로퍼/포니) · 기아(세피아/스포티지/프라이드) · 대우(티코/마티즈) · 쌍용(무쏘/코란도) · BMW(E30/E36) · Mercedes-Benz(W123/W124) · Toyota(코롤라 AE86/랜드크루저) · Honda(시빅) · Volkswagen(Beetle/Golf) · Volvo(240) · Porsche(911) · Nissan(Skyline) · Ford(Mustang) · Mini · Land Rover(Defender) · Jaguar(XJ) · Alfa Romeo.
 
